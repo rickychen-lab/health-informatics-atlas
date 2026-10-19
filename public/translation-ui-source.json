@@ -1,0 +1,19 @@
+[
+  "Try before looking back. Each answer comes with an explanation.",
+  "Suggested mastery check. Tick only when you can do this without looking at the answer.",
+  "Move the sampling slider. The underlying illustrative heart-rate readings stay the same, but the visible record changes. Sparse measurements can hide a transient peak.",
+  "Reference results describe the supplied teaching files, not clinical conclusions. The code blocks are reproducible guides; this website does not execute Python. Open the original notebook and data from your course folder, place them together and use your course Jupyter environment.",
+  "Your original data and notebooks stay on your computer. Work in Jupyter with a copy from your course folder. Try each task before opening the solution. Code shown here does not run in the website.",
+  "I completed this step and can explain the result.",
+  "Choose a topic or mix all four. Your first response is saved for each attempt; the latest attempt determines your review queue.",
+  "How would you explain this to a friend?",
+  "Original files remain on your computer; no original slides, transcripts, notebooks or patient-level datasets are hosted. Scope: Topics 1–4 in the supplied folder. This is not the complete MSc syllabus. HTML exports and notebook checkpoints were checked for duplication; they are not extra teaching sessions. Course announcements are historical notes, not your current timetable.",
+  "These contain download metadata rather than their original contents. septic_shock.csv also exists locally and was reviewed. The cleaned CSV and four checkpoint notebooks were unavailable; the three main practical notebooks are available.",
+  "External references checked on 19 October 2026. Governance lessons explain the course framework; use current institutional guidance for a real project.",
+  "The Topic 4 transcript and minutes describe a group paper presentation worth 30%, with seven papers to choose from. The paper list, full rubric and current submission instructions are not in this folder. Confirm the current requirements in KEATS; the recorded October dates are historical and the weekday/year context is inconsistent.",
+  "Suggested preparation: explain the research question in one sentence; identify the population, data source and outcome; describe the method without jargon; interpret the main result; critique bias, privacy, generalisability and clinical usefulness; prepare one limitation and one improvement. Practise a two-minute English summary and answer “Why does this matter for patient care?”",
+  "15 minutes: read a lesson and explain it aloud in simple English.",
+  "10 minutes: answer the questions without looking back.",
+  "10 minutes: attempt the application task or a practical step.",
+  "Return to missed questions after 1, 3 and 7 days. These are suggested review intervals; the site does not schedule reminders."
+]

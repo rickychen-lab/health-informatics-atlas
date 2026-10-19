@@ -11,10 +11,17 @@ A personal study companion for Applied Statistical Modelling and Health Informat
 - 20 lessons across Topics 1–4, with source filenames and page/cell references.
 - 43 questions with explanations, 55 bilingual glossary terms, and application exercises.
 - Three guided Python practicals with 20 steps and downloadable worked scripts.
+- Optional sentence-by-sentence English/Chinese translations throughout lesson bodies, quizzes, worked answers, practicals and glossary definitions.
 - Reading progress, mastery checklists, notes, guest-record migration and JSON backups.
 - Public course access; signed-in progress endpoints are restricted to the current account.
 
 Original slides, lecture transcripts, notebooks and patient-level datasets are **not included**. The repository contains authored teaching summaries, reference code and aggregate results. Private study records live in the hosted database, not in this repository.
+
+## Sentence translation
+
+Use **逐句翻译** in the top bar or inside a lesson to show a Chinese translation immediately below each English sentence. Turning it off restores continuous English reading. Titles, navigation, code, filenames and personal notes stay in their original form. The switch reuses the existing Chinese-language preference, including account sync; it does not reset learning records.
+
+Translations are authored and included in `public/translations.json`; there is no live translation service and personal notes are never submitted for translation. When adding or revising learning content, update its translations too. The coverage test reports missing or misaligned sentences.
 
 ## Development
 
