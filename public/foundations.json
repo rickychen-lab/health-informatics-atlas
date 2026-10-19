@@ -1,0 +1,1306 @@
+{
+  "lessons": [
+    {
+      "id": "people-before-models",
+      "title": "People, data & better decisions",
+      "topic": 1,
+      "minutes": 14,
+      "summary": "Understand what health informatics is trying to improve: a person’s decisions and care, supported by useful information.",
+      "zh": "核心不是模型有多先进，而是它能否真正帮助人做出更好的决定。",
+      "level": "Explain",
+      "outcomes": [
+        "Explain health informatics in your own words.",
+        "Apply the fundamental theorem to a proposed clinical tool.",
+        "Distinguish an EHR, EMR and PHR without treating the boundaries as absolute."
+      ],
+      "sections": [
+        {
+          "title": "Start with the person",
+          "body": "Health informatics studies how data, information and knowledge can improve health and healthcare. It brings together clinical understanding, computing and statistical reasoning. A useful tool must fit a real decision: who will use it, what they need to decide, and when they can act. A technically impressive dashboard can still fail if nobody can understand it during a busy clinic. Biomedical informatics is the broader scientific field; health informatics focuses on applying these ideas to health and care delivery. Learn the scope of the terms rather than memorising a dictionary sentence.",
+          "zh": "先问“谁在什么时刻，需要做什么决定”，再选择技术。"
+        },
+        {
+          "title": "The fundamental theorem",
+          "body": "The course expresses the central idea as a person with an information resource performing better than the same person without it. Treat this as a design aim that requires evaluation, not an automatic guarantee. The resource must add useful information; repeating what a clinician already knows can create distraction. People and workflows are unpredictable, so test how the resource behaves in practice and provide a recovery route when it fails. The transcript’s seventeen-click prediction model illustrates why ease of access is part of effectiveness. Compare the whole human–tool system, not just the model’s accuracy.",
+          "zh": "人 + 信息工具应优于单独的人；这需要实际验证，并非“用了AI就更好”。",
+          "example": "A readmission score is only useful if a care team sees it in time, understands its limitations and can offer an appropriate follow-up."
+        },
+        {
+          "title": "Know the record and the system",
+          "body": "An EHR is a computer-processable collection of patient health information, often spanning encounters and different kinds of evidence. The EHR system is the software that collects, stores, retrieves and displays it. An EMR commonly describes a narrower record within a practice or institution; a PHR is organised around the patient’s own management of information. These labels overlap in real use. Medication lists, observations, clinical notes, appointments and social history can all matter. A number in a table alone does not tell you which workflow produced it or whether it represents the patient’s current state.",
+          "zh": "EHR是信息记录；EHR system是管理记录的软件。EMR通常范围更窄，PHR偏向患者自主维护。"
+        }
+      ],
+      "pitfalls": [
+        "Equating a higher model score with better patient outcomes.",
+        "Assuming EHR and EMR have universally fixed, non-overlapping definitions."
+      ],
+      "mastery": [
+        "In 90 seconds, explain the theorem and give two reasons an accurate tool might be unused.",
+        "Name five EHR content types and explain one decision each could support."
+      ],
+      "sources": [
+        {
+          "file": "Topic1-3/Session 1 - Lecture 1.pdf",
+          "locator": "pages 3–8"
+        },
+        {
+          "file": "Topic1-3/Session 1- Lecture 2.pdf",
+          "locator": "pages 4–8"
+        },
+        {
+          "file": "Topic1-3/原文_健康信息学导论课核心理论与EHR数据特征.pdf",
+          "locator": "pages 1–4 and 19"
+        }
+      ],
+      "quiz": [
+        {
+          "question": "A highly accurate model requires seventeen clicks during a consultation. What should its evaluation include?",
+          "options": [
+            "Only discrimination on a test set",
+            "Only server speed",
+            "Whether clinicians can access and use it to improve decisions",
+            "Whether it uses the largest dataset"
+          ],
+          "answer": 2,
+          "explanation": "The theorem concerns the combined person and resource. Access, workload and consequences matter alongside predictive performance.",
+          "zh": "考察“人和工具一起工作的效果”。"
+        },
+        {
+          "question": "A patient records symptoms in a personally managed app. Which label is most informative?",
+          "options": [
+            "PHR",
+            "Anonymised registry",
+            "ICD classification",
+            "Hospital EMR by definition"
+          ],
+          "answer": 0,
+          "explanation": "A patient-managed record is naturally described as a personal health record, although it can connect to other systems.",
+          "zh": "PHR强调患者管理自己的健康记录。"
+        }
+      ],
+      "exercise": {
+        "prompt": "Design a one-paragraph brief for a tool supporting psychiatric discharge planning. Specify user, decision, new information, workflow and fallback.",
+        "hint": "Use five sentences, one for each item. Avoid starting with a favourite algorithm.",
+        "solution": "Example: A discharge nurse reviews follow-up needs before discharge. The tool summarises recent missed appointments and documented support needs. It appears within the discharge screen and shows source dates. The nurse checks the summary with the patient and care team. If unavailable, the existing discharge review remains usable.",
+        "zh": "先从使用者与任务出发，说明工具失败时如何继续工作。"
+      }
+    },
+    {
+      "id": "learning-health-system",
+      "title": "Turn records into a learning cycle",
+      "topic": 1,
+      "minutes": 18,
+      "summary": "Follow the course’s psychiatric readmission tutorial from raw records to action and evaluation.",
+      "zh": "学习型医疗系统是“记录→分析→行动→评价→再学习”的循环。",
+      "level": "Apply",
+      "outcomes": [
+        "Distinguish data, information, knowledge and action.",
+        "Design a complete Learning Health System cycle.",
+        "Choose outcome, process and balancing measures."
+      ],
+      "sections": [
+        {
+          "title": "Climb the meaning ladder",
+          "body": "Data are recorded facts such as dates, numbers and coded values. Information gives them context: two dates become a discharge and a subsequent admission, for example. Knowledge comes from interpreting reliable patterns with relevant evidence and limitations. Action combines that knowledge with an appropriate decision. These stages are useful distinctions, not a machine that automatically converts every analysis into truth. A count of readmissions is information; understanding a reproducible association and its uncertainty can contribute knowledge. Choosing a follow-up service additionally needs evidence, resources and patient preferences.",
+          "zh": "原始数字加上含义成为信息；经过可靠解释才可能形成知识；行动还需要证据和现实条件。"
+        },
+        {
+          "title": "Build the tutorial’s cycle",
+          "body": "The tutorial asks a mental health NHS Trust to investigate unplanned inpatient readmission within 90 days. Define the discharge cohort, follow-up window and outcome before counting. Consider clinical history, prior admissions, community contacts, social support and patient-reported experience. Some information is held outside the inpatient EHR. Extract only the needed fields through an authorised process, assess quality, analyse patterns, and discuss findings with patients and care teams. An association between limited follow-up and readmission can motivate investigation, but alone does not prove that adding an appointment prevents readmission.",
+          "zh": "先定义研究人群和90天窗口，再找临床、社区及患者报告等资料。相关性不能直接证明干预有效。"
+        },
+        {
+          "title": "Close the loop",
+          "body": "A learning system needs a culture willing to change, practical information tools and repeated evaluation. Agree how the finding will alter a pathway, who owns the change and how results will return to the team. Measure readmission, but also patient experience, access to care, follow-up completion and staff workload. A lower readmission rate could be misleading if people cannot access necessary hospital care. Evaluate existing care before change and evaluate the intervention afterwards; these are different moments in the same cycle. Repeat the analysis as new data accumulate and look for unequal effects across groups.",
+          "zh": "既要评价原有照护，也要评价改进后的效果；不要把“少住院”自动等同于“更健康”。",
+          "example": "A weekly report tracks completed follow-up contacts, while a scheduled review examines 90-day outcomes and patient feedback."
+        },
+        {
+          "title": "The people and infrastructure underneath",
+          "body": "The pyramid on slide 27 makes the supporting work visible: data acquisition, data engineering, master data management and governance, reporting and business intelligence, then data science. Acquisition obtains data; engineering builds reliable transformations and pipelines. Governance and management establish appropriate stewardship, quality and use. Reporting makes patterns visible, while statistical modelling can answer more demanding questions. These responsibilities work together rather than guaranteeing quality by climbing a fixed ladder. Informaticians connect clinical questions to usable data; engineers maintain pipelines; analysts evaluate evidence; clinicians, patients and managers judge and implement changes. No model closes the loop by itself.",
+          "zh": "第27页金字塔明确包括数据管理与治理。信息学人员连接临床问题与数据，工程师保障流程，分析师评估证据；改进需要患者、临床和管理人员一起完成。"
+        }
+      ],
+      "pitfalls": [
+        "Stopping after a dashboard is built.",
+        "Ignoring admissions to other providers.",
+        "Calling an intervention successful using one outcome alone."
+      ],
+      "mastery": [
+        "Draw the cycle with a concrete readmission example at every step.",
+        "Justify three measures and one possible unintended consequence."
+      ],
+      "sources": [
+        {
+          "file": "Topic1-3/Session 1 - Tutorial.pdf",
+          "locator": "pages 1–3"
+        },
+        {
+          "file": "Topic1-3/Session 1 - Lecture 1.pdf",
+          "locator": "pages 20–28"
+        },
+        {
+          "file": "Topic1-3/原文_健康信息学导论课核心理论与EHR数据特征.pdf",
+          "locator": "pages 7–10"
+        }
+      ],
+      "quiz": [
+        {
+          "question": "Readmissions fall after a pathway change, but patients report difficulty obtaining urgent care. What is the best interpretation?",
+          "options": [
+            "The intervention definitely worked",
+            "The outcome needs balancing measures before judging benefit",
+            "Patient reports are irrelevant",
+            "The data must be deleted"
+          ],
+          "answer": 1,
+          "explanation": "Reduced use can reflect improved health or impaired access. Patient experience and other outcomes help distinguish these explanations.",
+          "zh": "下降可能意味着照护改善，也可能意味着难以获得照护。"
+        },
+        {
+          "question": "Which step most clearly turns an analysis into a Learning Health System?",
+          "options": [
+            "Saving a spreadsheet",
+            "Publishing a graph once",
+            "Applying findings, monitoring consequences and feeding learning back",
+            "Increasing the number of model parameters"
+          ],
+          "answer": 2,
+          "explanation": "The continuous feedback between evidence and practice is essential.",
+          "zh": "关键是证据反馈到实践，并继续评价。"
+        },
+        {
+          "question": "Which task is chiefly data engineering rather than analysis?",
+          "options": [
+            "Estimating the uncertainty of a readmission association",
+            "Building a reproducible pipeline that links and transforms approved records",
+            "Interpreting patient feedback",
+            "Deciding whether an intervention benefits patients"
+          ],
+          "answer": 1,
+          "explanation": "Engineering builds the infrastructure and transformations that make data usable; analysis uses those data to answer questions. Both need governance and quality checks.",
+          "zh": "工程解决“怎样可靠地获得可分析数据”，分析解决“数据支持什么结论”。"
+        }
+      ],
+      "exercise": {
+        "prompt": "Complete all seven Tutorial 1 tasks for unplanned psychiatric readmission within 90 days: identify data and sources; give two data → information → knowledge → action examples; propose improvements; plan evaluation; draw a cycle; reflect on missing information, quality and workforce roles.",
+        "hint": "Map each variable to a source and ask what the EHR cannot see. Keep association separate from intervention effect. Include who evaluates, when, and how findings return to practice.",
+        "solution": "1. Data: patient characteristics, diagnoses, previous admissions, medication and discharge plans, community contacts, housing or social support, and patient-reported experience. Sources: inpatient EHR, community mental health services, primary care, social care and patients/carers. Link only relevant information through an appropriate authorised process.\n\n2. Example A: discharge and admission timestamps are raw data; a consistently defined 90-day readmission indicator is information; a reliable, contextualised pattern linking gaps in follow-up with readmission contributes knowledge; a co-designed follow-up pathway is a possible action requiring evaluation. Example B: recorded appointment dates and attendance codes are data; a count of missed contacts before discharge is information; interpreting patterns alongside patient-reported transport or communication difficulties contributes knowledge; accessible contact options are a candidate service change. Neither example proves the action will reduce readmission.\n\n3. Improvements could include an agreed community handover, individually planned follow-up, patient/carer involvement, resource allocation for unmet needs and a clear escalation pathway. Assign a responsible team and check feasibility.\n\n4. Evaluate readmission with a clear denominator and follow-up period, follow-up completion, patient experience, equity, access and staff workload. Clinicians, analysts, service managers and patient representatives should jointly interpret success. An illustrative schedule is weekly review of process problems and a quarterly outcomes review once 90-day follow-up has matured; this is a proposed plan, not a course-mandated interval. Compare periods or groups using a suitable evaluation design and discuss alternative explanations.\n\n5. Diagram: routine care + patient experience → question → approved data sources → extract, link and quality-check → analyse with uncertainty → co-design and implement a change → evaluate outcomes and experience → refine question and practice → new care data.\n\n6. Reflection: informal support, loneliness, housing instability, care received elsewhere and patient priorities may be absent or incomplete. Coding changes, linkage errors, missingness and unequal service access can distort conclusions. Context turns a recorded value into information; reliable interpretation with evidence contributes knowledge.\n\n7. Workforce: informaticians translate questions into data requirements; engineers build and validate pipelines; analysts assess evidence; clinicians and patients interpret relevance; managers enable action and monitoring. The fundamental theorem asks whether this combined resource and its users improve decisions and care compared with working without it.",
+        "zh": "答案覆盖原教程七个任务：数据和来源、两条DIKA链、干预、评价、循环图、局限与反思、团队职责。所建议的复盘频率只是示例，并非课程规定。"
+      }
+    },
+    {
+      "id": "research-questions",
+      "title": "Ask the question your data can answer",
+      "topic": 1,
+      "minutes": 17,
+      "summary": "Separate description, exploration, inference, prediction and causation before choosing a model.",
+      "zh": "先明确问题类型，再选分析方法；预测风险不等于证明治疗有效。",
+      "level": "Critique",
+      "outcomes": [
+        "Classify questions by their aim.",
+        "Specify population, outcome and time horizon.",
+        "Recognise why prediction does not establish treatment effect."
+      ],
+      "sections": [
+        {
+          "title": "Give every question a job",
+          "body": "A descriptive question summarises the observed dataset: what is the median length of stay? An exploratory question looks for patterns worth investigating. An inferential question estimates a population quantity or association with uncertainty and assumptions. A predictive question estimates an unseen outcome, often for a new patient. A causal question asks what would change under an intervention compared with an alternative. Mechanistic questions examine how a process operates. These categories can overlap in a project, but you should state the aim of each analysis so the evidence is judged appropriately.",
+          "zh": "描述是“发生了什么”；预测是“可能发生什么”；因果是“如果改变某事，会怎样”。"
+        },
+        {
+          "title": "Make the question answerable",
+          "body": "Specify a population, a starting point, information available at that point, an outcome and a follow-up period. “Can we predict deterioration?” is too vague. “Using information available at discharge, estimate unplanned psychiatric admission within 90 days among eligible adult discharges” tells you much more. Decide how repeated admissions are handled and how incomplete follow-up is recorded. The same regression tool may serve different questions, but its interpretation and evaluation must match the aim. A tidy dataset does not rescue an unclear target.",
+          "zh": "写清人群、起点、可用信息、结局和时间范围；否则模型很容易回答错问题。"
+        },
+        {
+          "title": "Read the SLE example carefully",
+          "body": "The lecture’s SLE case begins with exploration because researchers may not yet know which records and patterns exist. That preparatory step is different from the final question of whether a treatment should be given. Predicting clotting risk does not by itself estimate the benefit or harm of anticoagulation. In observational records, patients receiving a treatment may differ systematically from those who do not. Such differences can confound a comparison. A strong answer explains what the data can establish, what extra design or evidence is needed, and where uncertainty remains. You are learning question framing here, not a clinical treatment rule.",
+          "zh": "课堂先探索数据，但“应不应该治疗”仍需要干预效果与风险证据，不能只看风险预测。"
+        }
+      ],
+      "pitfalls": [
+        "Treating exploratory findings as confirmed hypotheses.",
+        "Using association, prediction and causation interchangeably.",
+        "Including information recorded after the prediction time."
+      ],
+      "mastery": [
+        "Write descriptive, predictive and causal versions of one readmission problem.",
+        "Explain one confounder and one possible leakage variable."
+      ],
+      "sources": [
+        {
+          "file": "Topic1-3/Session 1 - Lecture 1.pdf",
+          "locator": "pages 11–20 and 29–34"
+        },
+        {
+          "file": "Topic1-3/原文_健康信息学导论课核心理论与EHR数据特征.pdf",
+          "locator": "pages 11–16"
+        }
+      ],
+      "quiz": [
+        {
+          "question": "A model predicts high readmission risk accurately. What does this alone establish about an extra follow-up visit?",
+          "options": [
+            "It will prevent readmission",
+            "It is cost-effective",
+            "Its causal benefit is not established by prediction alone",
+            "It should replace clinical review"
+          ],
+          "answer": 2,
+          "explanation": "A risk estimate and an intervention effect are different quantities. Evidence about the intervention and a suitable design are needed.",
+          "zh": "知道谁风险高，并不等于知道什么干预有效。"
+        },
+        {
+          "question": "Which feature would leak future information in a discharge-time model?",
+          "options": [
+            "Age recorded before discharge",
+            "Prior admissions before discharge",
+            "A diagnosis recorded during the next admission",
+            "Pre-discharge observations"
+          ],
+          "answer": 2,
+          "explanation": "The next admission occurs after the prediction point and would not be available when the model is used.",
+          "zh": "预测时尚不知道的信息不能作为输入。"
+        }
+      ],
+      "exercise": {
+        "prompt": "Rewrite “Does comorbidity impact length of stay?” as one descriptive, one predictive and one causal question.",
+        "hint": "Replace the ambiguous word impact with the exact quantity you want.",
+        "solution": "Descriptive: what is median LOS within each comorbidity category in this cohort? Predictive: using information available at admission, how accurately can we estimate LOS for a new eligible patient? Causal: what would be the effect of a specified intervention targeting a comorbidity on LOS versus a defined alternative? Comorbidity itself is not a clearly specified intervention.",
+        "zh": "“impact”容易混淆相关和因果；因果问题还要明确可实施的干预。"
+      }
+    },
+    {
+      "id": "ehr-bias",
+      "title": "Read the care process behind the data",
+      "topic": 1,
+      "minutes": 18,
+      "summary": "EHR data are traces of care, not a complete or randomly sampled picture of health.",
+      "zh": "EHR记录的是“医疗过程留下的痕迹”，并不是每个人健康状况的完整真相。",
+      "level": "Critique",
+      "outcomes": [
+        "Distinguish primary and secondary use.",
+        "Explain selection, recording and measurement bias.",
+        "Identify information an EHR may fail to capture."
+      ],
+      "sections": [
+        {
+          "title": "Why reuse EHR data?",
+          "body": "Records are collected during care to support communication, treatment planning and delivery. Research, service planning and resource allocation are secondary uses. Reusing records can provide large samples, repeated observations and rich clinical context without collecting everything again. Rare conditions may become more studyable. Yet a dataset collected for a clinician’s immediate task was not designed around your later hypothesis. A prescription, a dispensing record and confirmed medication use represent different events. Treating them as identical can produce a convincing but misleading result. Always ask what real-world event a variable actually measures.",
+          "zh": "开处方、取药、真正服药是不同事件，不能因为字段看起来类似就混用。"
+        },
+        {
+          "title": "Who appears, and what gets measured?",
+          "body": "People enter the dataset through access to services, referral and recording practices. Those with more severe illness may have more visits and tests. People with unmet needs may be absent. Clinicians record what is relevant to the current decision; billing and administrative incentives also shape coding. A missing test might mean no indication, unavailable resources, a result stored elsewhere or a failed data transfer. These explanations have different implications. More rows do not remove systematic bias. A million observations from one process can still poorly represent the population you want to study.",
+          "zh": "样本量大只能减少部分随机误差，不能自动消除系统性偏差。"
+        },
+        {
+          "title": "Audit before you analyse",
+          "body": "Check population coverage, dates, setting, identifiers, units, coding changes and missingness. Separate a true absence from “not documented”. Read a data dictionary and trace selected fields back to their source workflow. Consider fragmented care across hospitals, primary care, community services and self-management. Clinical notes may hold detail that structured fields omit. Instruments and guidelines also change over time, so an apparent trend may be a recording change. State these limitations alongside results. The course’s praise of efficient, rich routine data and its warnings about incompleteness are complementary: fitness for a specific question is what matters.",
+          "zh": "分析前检查覆盖范围、编码与时间变化，并追溯每个变量从何而来。"
+        }
+      ],
+      "pitfalls": [
+        "Assuming no recorded diagnosis means no disease.",
+        "Calling a hospital cohort representative of everyone.",
+        "Confusing a data collection change with a disease trend."
+      ],
+      "mastery": [
+        "Give three explanations for an absent test and explain the bias each could introduce.",
+        "Write a short limitations paragraph for a single-hospital study."
+      ],
+      "sources": [
+        {
+          "file": "Topic1-3/Session 1- Lecture 2.pdf",
+          "locator": "pages 9–13"
+        },
+        {
+          "file": "Topic1-3/原文_健康信息学导论课核心理论与EHR数据特征.pdf",
+          "locator": "pages 16–19"
+        }
+      ],
+      "quiz": [
+        {
+          "question": "A laboratory variable is missing mainly among less frequently attending patients. What is the safest initial interpretation?",
+          "options": [
+            "All missing values are normal",
+            "All missing values can be replaced by zero",
+            "The observation process may be related to patient characteristics",
+            "The missing values are definitely random"
+          ],
+          "answer": 2,
+          "explanation": "Attendance and test ordering can depend on health and care access, so investigate the missingness process.",
+          "zh": "缺失可能反映就医行为和检查决策。"
+        },
+        {
+          "question": "A new coding system coincides with a rise in recorded diagnoses. What should you investigate first?",
+          "options": [
+            "Whether the rise reflects changed recording as well as disease",
+            "Whether every new diagnosis is false",
+            "Whether all historical records should be discarded",
+            "Whether sample size is sufficient to prove causation"
+          ],
+          "answer": 0,
+          "explanation": "A change in measurement can create an apparent trend; compare definitions and coverage across periods.",
+          "zh": "先排除“记录方式变化”造成的假趋势。"
+        }
+      ],
+      "exercise": {
+        "prompt": "A hospital study finds patients with more tests have higher mortality. Give three explanations without claiming tests cause death.",
+        "hint": "Consider illness severity, care pathways and who has complete records.",
+        "solution": "Sicker patients may receive more tests and have higher mortality; intensive monitoring may be concentrated in particular units; fragmented records may undercount tests or outcomes for other patients. Define timing, examine clinical severity and data coverage, and avoid a causal interpretation from this association alone.",
+        "zh": "至少区分疾病严重度、医疗流程和数据覆盖三种解释。"
+      }
+    },
+    {
+      "id": "interoperability",
+      "title": "Make systems exchange meaning",
+      "topic": 2,
+      "minutes": 18,
+      "summary": "Learn the four interoperability layers and the distinct roles of exchange standards and clinical terminology.",
+      "zh": "互操作性不只是“能传文件”，还必须理解含义，并在组织之间按规则使用。",
+      "level": "Apply",
+      "outcomes": [
+        "Explain foundational, structural, semantic and organisational layers.",
+        "Distinguish message format from clinical meaning.",
+        "Describe HL7 v2, v3, CDA and FHIR at recognition level."
+      ],
+      "sections": [
+        {
+          "title": "Four questions, four layers",
+          "body": "Foundational interoperability asks whether systems can connect and transfer data. Structural interoperability asks whether the receiving system can read the agreed format and fields. Semantic interoperability asks whether both sides understand the same meaning. Organisational interoperability concerns the agreements, responsibilities and workflows that allow appropriate use across boundaries. These layers depend on each other. A correctly delivered file can still be misunderstood; a fully understood record may still lack an agreed purpose for sharing. Use these questions to diagnose a failure rather than simply saying two systems are incompatible.",
+          "zh": "基础：能传；结构：能读；语义：能懂；组织：能按共同规则使用。"
+        },
+        {
+          "title": "Recognise the exchange standards",
+          "body": "HL7 develops health information exchange standards. The lectures introduce v2 messages, often recognised by pipe-delimited segments; the v3 family, based on more formal information models; CDA for clinical documents; and FHIR for exchange using defined resources and modern web approaches. For this course, explain their roles rather than memorising full technical specifications. A correction to the slide shorthand: CDA is not restricted to unstructured content. It supports clinical documents with a header and body, and structured entries may be included. Knowing a standard’s name alone does not establish that two implementations are compatible.",
+          "zh": "HL7标准解决信息交换的表达与组织；CDA不只是“传PDF”，也能包含结构化内容。"
+        },
+        {
+          "title": "A message needs context",
+          "body": "Suppose one system sends a glucose value with a numeric field that the other can parse. To interpret it safely, both systems need the measurement concept, units, timing and relevant context. A terminology helps identify the concept; the exchange format carries that information. Local conventions, versions and missing fields still require validation. An API is a communication mechanism, not proof that terms mean the same thing. The transcript emphasises that even solved technical barriers do not settle whether sharing is appropriate. Governance and purpose remain part of an interoperable service.",
+          "zh": "API让系统沟通；标准术语帮助双方理解同一个概念，两者不能互相替代。"
+        },
+        {
+          "title": "Read the OpenHIE architecture",
+          "body": "Slide 9 illustrates systems at the point of service—community, clinical, laboratory and pharmacy applications—connecting through an interoperability layer. That layer includes authentication, interlinking and entity mapping. Registry services supply shared references for clients, facilities, health workers, terminology and products; domain services include a shared health record and management services. The diagram’s lesson is architectural: separate systems need shared identity, vocabulary and connection services. A patient appearing under different local identifiers creates a linkage problem even if the message format is valid. Recognise the components and their roles; this introductory lecture does not require implementing the whole architecture.",
+          "zh": "OpenHIE图示强调共同的身份、术语、注册服务和交换层。消息格式正确，也不代表两个本地ID已经匹配到同一患者。"
+        }
+      ],
+      "pitfalls": [
+        "Saying an API automatically provides semantic interoperability.",
+        "Treating JSON as a clinical vocabulary.",
+        "Assuming CDA contains only unstructured text."
+      ],
+      "mastery": [
+        "Diagnose one failure at each layer using a referral example.",
+        "Explain why a numeric test value needs units, time and a concept identifier."
+      ],
+      "sources": [
+        {
+          "file": "Topic1-3/Session 2 - Lecture 1.pdf",
+          "locator": "pages 3–15"
+        },
+        {
+          "file": "Topic1-3/原文_健康信息学伦理与科学方法导论.pdf",
+          "locator": "pages 1–2"
+        }
+      ],
+      "quiz": [
+        {
+          "question": "A receiving system reads a numeric result but assumes the wrong unit. Which layer has clearly failed?",
+          "options": [
+            "Foundational only",
+            "Semantic",
+            "Network connectivity only",
+            "No layer, because the file arrived"
+          ],
+          "answer": 1,
+          "explanation": "The value was delivered and parsed, but its meaning was not preserved.",
+          "zh": "传到了、读到了，不代表理解对了。"
+        },
+        {
+          "question": "Two services interpret the same record correctly but have no agreement on access or responsibility. What is missing?",
+          "options": [
+            "Only a new coding ontology",
+            "Only a faster API",
+            "Organisational arrangements",
+            "More decimal places"
+          ],
+          "answer": 2,
+          "explanation": "Technical exchange and meaning do not replace agreements, roles and governance.",
+          "zh": "组织层包括授权、责任和流程。"
+        },
+        {
+          "question": "Two valid messages describe the same patient under different local IDs. Which OpenHIE-style capability addresses the identity problem most directly?",
+          "options": [
+            "A different chart colour",
+            "Client identity matching and entity mapping",
+            "A larger language model vocabulary",
+            "Converting every file to PDF"
+          ],
+          "answer": 1,
+          "explanation": "A client registry and mapping processes help resolve identities across systems. Correct syntax alone cannot establish that records belong to the same person.",
+          "zh": "身份匹配与映射用于连接同一人的不同本地标识。"
+        }
+      ],
+      "exercise": {
+        "prompt": "Explain a failed referral in four sentences: the network works, fields parse, “MI” is ambiguous, and no team owns follow-up.",
+        "hint": "One sentence should explain the working layers; two should identify unresolved problems.",
+        "solution": "Foundational connectivity is present and structural parsing works. Semantic interoperability is incomplete because an abbreviation lacks an agreed meaning. Organisational interoperability is incomplete because follow-up ownership is unclear. Resolve terminology and responsibilities, then test the whole workflow.",
+        "zh": "用四层框架定位问题，不要笼统归因于“系统不好”。"
+      }
+    },
+    {
+      "id": "clinical-terminology",
+      "title": "ICD, SNOMED CT & clinical meaning",
+      "topic": 2,
+      "minutes": 18,
+      "summary": "Understand why counting disease episodes and recording detailed clinical meaning need different tools.",
+      "zh": "ICD偏向分类统计；SNOMED CT偏向表达临床概念及其关系。",
+      "level": "Apply",
+      "outcomes": [
+        "Compare ICD-10 with SNOMED CT by purpose and structure.",
+        "Explain concepts, descriptions, codes and relationships.",
+        "Recognise information loss when mapping between terminologies."
+      ],
+      "sections": [
+        {
+          "title": "Choose the tool for the job",
+          "body": "The course presents ICD-10 as a classification used to summarise episodes for reporting, statistics, planning and reimbursement. Clinical coders interpret documentation and assign codes. SNOMED CT supports detailed clinical concepts and relationships useful in recording and retrieving clinical information. The difference is not that one is good and the other bad: their purposes differ. Classification supports consistent counting; a clinical terminology supports more detailed meaning. Always name the terminology and version when interpreting a code. A number without its coding system is not a self-contained clinical statement.",
+          "zh": "两者服务不同目的；看到代码时必须知道它来自哪个体系和版本。"
+        },
+        {
+          "title": "Separate a concept from its words",
+          "body": "A concept represents a clinical meaning. A code identifies it for computers; descriptions provide human-readable terms, including synonyms. Relationships connect concepts, such as an “is a” link from a more specific concept to a broader one. SNOMED CT allows multiple parent concepts, a polyhierarchy. This supports retrieval through different clinically meaningful routes. Correct the meeting note’s claim about cycles: the SNOMED subtype hierarchy is a directed acyclic graph. Having two parents does not imply a loop. Other relationship types express additional clinical detail beyond a simple classification tree.",
+          "zh": "概念是含义，描述是文字，代码是标识；多父节点不等于存在循环。"
+        },
+        {
+          "title": "Mapping needs judgement",
+          "body": "A mapping connects representations in different systems, but it is not always an exact translation. A detailed clinical concept may map into a broader classification category, losing specificity. Some mappings require extra context, and reversing a mapping may not recover the original meaning. The lecture’s ontology-mapping task uses text annotation to explore this issue. Examine whether a highlighted phrase is actually the intended concept and whether related concepts are being confused with synonyms. For study, practise explaining a mapping’s purpose and limits; do not invent medical codes or assume a nearest-looking label is correct.",
+          "zh": "映射可能损失细节，也可能需要额外背景；从A映到B再映回A，不一定得到原信息。"
+        },
+        {
+          "title": "Read descriptions and relationship types",
+          "body": "The image on slide 15 distinguishes a Fully Specified Name, which clarifies a concept’s meaning, from synonyms. A language reference set indicates which description is preferred or acceptable in its context; a different label does not necessarily mean a different concept. Slides 14–16 also distinguish “is a” from attribute relationships such as finding site. “Type 2 diabetes is a diabetes mellitus” expresses subtype membership; a finding-site relationship describes anatomical context, not a synonym or parent class. Slide 3 additionally names MeSH, FMA, GO, UMLS, LOINC and the NCI Thesaurus, illustrating that different domains have different terminology resources.",
+          "zh": "FSN帮助明确概念含义；首选词与可接受同义词依语言参考集而定。“is a”表示上下位关系，finding site等属性表示另一类关联。"
+        }
+      ],
+      "pitfalls": [
+        "Treating related concepts as exact synonyms.",
+        "Assuming every mapping is one-to-one and reversible.",
+        "Repeating the transcript’s claim that the is-a hierarchy contains cycles."
+      ],
+      "mastery": [
+        "Explain the ICD/SNOMED distinction using one reporting and one clinical-recording scenario.",
+        "Draw a small polyhierarchy and identify where a mapping could lose detail."
+      ],
+      "sources": [
+        {
+          "file": "Topic1-3/Session 2 - Lecture 2.pdf",
+          "locator": "pages 7–18"
+        },
+        {
+          "file": "Topic1-3/原文_NHS编码体系对比与实践教程分组.pdf",
+          "locator": "page 1"
+        },
+        {
+          "file": "Topic1-3/纪要_NHS编码体系对比与实践教程分组.md",
+          "locator": "coding-system summary; correction applied"
+        }
+      ],
+      "quiz": [
+        {
+          "question": "A detailed clinical concept maps to a broad reporting category. Can the original detail always be recovered?",
+          "options": [
+            "Yes, every map is reversible",
+            "No, the mapping may lose specificity",
+            "Yes, if the code is numeric",
+            "No, because codes never have meanings"
+          ],
+          "answer": 1,
+          "explanation": "Many-to-one mapping loses distinctions unless additional information is retained.",
+          "zh": "多对一映射可能丢失信息。"
+        },
+        {
+          "question": "What does a SNOMED concept with two is-a parents demonstrate?",
+          "options": [
+            "A cycle must exist",
+            "The code is invalid",
+            "A polyhierarchy can represent multiple broader categories",
+            "A description is a diagnosis"
+          ],
+          "answer": 2,
+          "explanation": "Multiple parent relationships are compatible with an acyclic subtype hierarchy.",
+          "zh": "多个父节点是多重层级，不是循环。"
+        },
+        {
+          "question": "What is the key difference between an is-a relationship and a finding-site relationship?",
+          "options": [
+            "Both always mean synonym",
+            "Is-a expresses subtype membership; finding site expresses an attribute",
+            "Finding site is the numeric patient ID",
+            "Is-a means two terms have identical meanings"
+          ],
+          "answer": 1,
+          "explanation": "Subtype links organise broader and narrower concepts. Attribute links describe properties or clinical context; they are not interchangeable with subtype or synonym relationships.",
+          "zh": "上下位关系、属性关系和同义关系是三种不同含义。"
+        }
+      ],
+      "exercise": {
+        "prompt": "Explain why “heart attack” and “myocardial infarction” may need terminology mapping, while “diabetes” and “type 1 diabetes” should not simply be merged as synonyms.",
+        "hint": "Distinguish different words for a meaning from a broader/narrower concept relationship.",
+        "solution": "The first pair can refer to the same clinical concept in suitable context. Type 1 diabetes is a more specific concept than diabetes generally. Mapping should preserve specificity and contextual meaning rather than flatten all related phrases into the same label.",
+        "zh": "同义表达与上下位概念必须分开，不能只凭词语相关就合并。"
+      }
+    },
+    {
+      "id": "clinical-text",
+      "title": "From clinical text to usable evidence",
+      "topic": 2,
+      "minutes": 16,
+      "summary": "An introductory bridge to NLP: representation, document classification, entity recognition and linking.",
+      "zh": "NLP把临床文字转成可分析的信息；识别一个词，不等于确认患者有这个病。",
+      "level": "Explain",
+      "outcomes": [
+        "Name the introductory clinical NLP tasks in the supplied recording.",
+        "Distinguish entity recognition from entity linking.",
+        "Identify why negation, timing and experiencer matter."
+      ],
+      "sections": [
+        {
+          "title": "Why clinical text is different",
+          "body": "Clinical records contain narratives such as discharge summaries, correspondence and nursing notes. These explain events and decisions that structured columns may miss. Reading a large collection manually is expensive, which motivates natural language processing. The supplied NLP recording is an introduction to a later module: it previews representation, classification, entity recognition, linking and neural approaches. It does not provide a complete modelling practical or assessment specification. Your target here is to understand these tasks and their risks, not to claim mastery of language-model training from this short preview.",
+          "zh": "现有NLP材料只是导论，不能据此声称已经覆盖完整模型训练课程。"
+        },
+        {
+          "title": "Turn words into tasks",
+          "body": "Text representation converts language into a form a computational model can use. Document classification assigns a category, for example discharge summary or nursing note. Entity recognition locates spans referring to relevant things such as diseases or medicines. Entity linking connects a recognised span to an appropriate terminology concept. These are different operations: finding a phrase does not guarantee that its meaning was linked correctly. The terminology lesson supplies the vocabulary for evaluating links. Read examples critically, because a broad concept and its subtype are related but not interchangeable.",
+          "zh": "分类判断文档类型；实体识别找出词段；实体链接把词段对应到标准概念。"
+        },
+        {
+          "title": "Keep the surrounding meaning",
+          "body": "Consider “No history of asthma; mother has diabetes.” A word detector can find both disease names, yet neither phrase establishes that the patient currently has the disease. Negation, historical context, uncertainty and whose condition is described all matter. These examples extend the introductory recording to help you critique extracted data. A responsible workflow defines the target, checks a manually reviewed sample, records errors and follows access rules for the source text. AI-generated summaries should point back to evidence. The separate AI-use recording explicitly asks students to track sources and use tools to find trustworthy information.",
+          "zh": "“无哮喘史”和“母亲患糖尿病”都出现疾病词，但不能标记为患者当前确诊。"
+        }
+      ],
+      "pitfalls": [
+        "Treating any disease mention as a positive patient diagnosis.",
+        "Confusing entity detection with correct concept mapping.",
+        "Treating an AI-generated explanation as a source."
+      ],
+      "mastery": [
+        "Annotate a short fictional note with entity, concept, negation, time and experiencer.",
+        "Explain which NLP tasks are only previewed in the supplied material."
+      ],
+      "sources": [
+        {
+          "file": "Topic1-3/原文_电子健康记录NLP模块课程导论.pdf",
+          "locator": "pages 1–2"
+        },
+        {
+          "file": "Topic1-3/纪要_电子健康记录NLP模块课程导论.md",
+          "locator": "NLP task summary"
+        },
+        {
+          "file": "Topic1-3/原文_AI使用与EHR认知教学指导.pdf",
+          "locator": "page 1"
+        },
+        {
+          "file": "Topic1-3/Session 2 - Lecture 2.pdf",
+          "locator": "page 18"
+        }
+      ],
+      "quiz": [
+        {
+          "question": "A system highlights “diabetes” but assigns the wrong standard concept. Which task failed most directly?",
+          "options": [
+            "Entity linking",
+            "File transfer",
+            "Counting rows",
+            "Document storage"
+          ],
+          "answer": 0,
+          "explanation": "Recognition found the span; linking determines the terminology concept.",
+          "zh": "找到了词段，但概念链接错了。"
+        },
+        {
+          "question": "Which sentence supports a current patient diagnosis most directly, assuming the note is accurate?",
+          "options": [
+            "Mother has asthma",
+            "No evidence of asthma",
+            "Asthma confirmed at this visit",
+            "Rule out asthma"
+          ],
+          "answer": 2,
+          "explanation": "The other sentences express family history, negation or uncertainty rather than a confirmed current diagnosis.",
+          "zh": "家族史、否定和待排查都不能直接当作确诊。"
+        }
+      ],
+      "exercise": {
+        "prompt": "Annotate: “Previous depression, currently stable. No evidence of psychosis. Father had diabetes. Review for possible insomnia.”",
+        "hint": "Use status labels: historical, negated, family history and uncertain.",
+        "solution": "Depression: historical diagnosis with current stability described. Psychosis: negated in this statement. Diabetes: father, not patient. Insomnia: possible, not confirmed. Preserve the original text and time context when creating structured features.",
+        "zh": "把否定、时间、人物归属和不确定性保留下来。"
+      }
+    },
+    {
+      "id": "pandas-cohort",
+      "title": "Practical 1 · inspect, clean, explain",
+      "topic": 1,
+      "minutes": 25,
+      "summary": "Build a defensible pandas cleaning workflow for the supplied septic-shock teaching table.",
+      "zh": "数据清洗要能解释、能复现，并保留删除或标记的理由。",
+      "level": "Apply",
+      "outcomes": [
+        "Inspect shape, dtypes, columns and distributions.",
+        "Use Boolean masks without silently overwriting the raw data.",
+        "Export a cleaned copy with a transparent audit trail."
+      ],
+      "sections": [
+        {
+          "title": "Understand the table first",
+          "body": "The supplied septic_shock.csv contains 1,000 rows and 16 columns. The notebook describes one row per patient and aggregated measurements from the first 24 hours, but an identifier audit finds only 760 distinct Subject_ID values across 1,000 rows (240 rows beyond the first occurrence). Do not assume the rows represent 1,000 independent patients. There is one identifier, thirteen candidate features and two outcomes, Mortality and LOS; the introductory claim of eleven features is inconsistent with the actual columns. The filename simulated_data.csv is also a stale reference: use the supplied septic_shock.csv. Begin with shape, columns, dtypes, missing counts and identifier checks. A numeric dtype does not mean a field is a continuous measurement; gender is a coded category in this teaching file.",
+          "zh": "实际文件有16列：1个ID、13个候选特征、2个结局；以真实字段为准。 1000行只有760个不同ID，不能直接当作1000位独立患者。",
+          "code": "from pathlib import Path\nimport pandas as pd\np = Path('Topic1-3/ProgrammingNoSolution/septic_shock.csv')\nraw = pd.read_csv(p)\nprint(raw.shape, raw.dtypes)\nprint(raw.isna().sum())\nprint(raw['Subject_ID'].duplicated().sum())"
+        },
+        {
+          "title": "Flag before excluding",
+          "body": "The practical asks you to remove invalid gender codes and clearly erroneous temperature or heart-rate values. Keep an untouched raw table and first create flags. In this dataset the stated category set is {0, 1}; that is a file-specific encoding, not a universal statement about sex or gender. Distinguish missing, invalid and extreme-but-possible values. Use the data dictionary, units and expert judgement to justify plausibility bounds; do not delete every boxplot outlier. A row with one questionable measurement may still contain useful data. Whole-row exclusion follows this teaching exercise but requires justification in research.",
+          "zh": "先标记，再决定处理；异常值不一定是错误值，整行删除也会改变研究人群。",
+          "code": "invalid_gender = raw['gender'].notna() & ~raw['gender'].isin([0, 1])\nreview = raw.loc[invalid_gender].copy()\nclean = raw.loc[~invalid_gender].copy()\nprint({'flagged': int(invalid_gender.sum()), 'retained': len(clean)})"
+        },
+        {
+          "title": "Verify and document the result",
+          "body": "Use describe and plots to locate implausible scales, then record every cleaning rule, affected count and reason. Check min–max consistency, units, missingness and duplicate identifiers as separate issues. The notebook’s historical laboratory ranges are not universal thresholds; assays and units matter, so avoid converting them into clinical rules. Replot after cleaning and compare the retained cohort with the original. Export a new file with index=False so the pandas index does not become an accidental extra column. Re-running the same script from raw input should reproduce the same output and audit.",
+          "zh": "记录每条规则和影响人数；导出时index=False，避免多出无意义索引列。",
+          "code": "clean.to_csv('septic_shock_cleaned.csv', index=False, encoding='utf-8')"
+        }
+      ],
+      "pitfalls": [
+        "Copying the lecturer’s absolute path from another computer.",
+        "Deleting missing values as though they were invalid categories.",
+        "Using outcome or future measurements in admission-time predictors."
+      ],
+      "mastery": [
+        "Complete all three original practical tasks and explain each exclusion.",
+        "Report before/after rows and distinguish missing from invalid values."
+      ],
+      "sources": [
+        {
+          "file": "Topic1-3/ProgrammingNoSolution/Pract1.ipynb",
+          "locator": "cells 1–23"
+        },
+        {
+          "file": "Topic1-3/ProgrammingNoSolution/Pract1.html",
+          "locator": "all practical tasks and stored shape output"
+        },
+        {
+          "file": "Topic1-3/ProgrammingNoSolution/septic_shock.csv",
+          "locator": "header and 1,000-row table"
+        }
+      ],
+      "quiz": [
+        {
+          "question": "A boxplot marks an extreme but plausible value. What is the best next step?",
+          "options": [
+            "Delete it automatically",
+            "Check units, provenance and a justified plausibility rule",
+            "Replace it with zero",
+            "Treat it as definite disease severity"
+          ],
+          "answer": 1,
+          "explanation": "A statistical outlier is not the same as a recording error. Context determines handling.",
+          "zh": "统计离群值不等于录入错误。"
+        },
+        {
+          "question": "Why use index=False when exporting this cleaned table?",
+          "options": [
+            "To hide patient IDs",
+            "To remove missing data",
+            "To avoid writing the DataFrame index as an extra CSV column",
+            "To anonymise every row"
+          ],
+          "answer": 2,
+          "explanation": "The option controls export of the pandas index. It neither removes patient identifiers nor anonymises data.",
+          "zh": "index=False只控制是否导出行索引，不是匿名化。"
+        }
+      ],
+      "exercise": {
+        "prompt": "Write a mask for observed gender values outside {0,1}, create a separate review table, and export the remaining rows. State how missing values are handled.",
+        "hint": "Combine notna() with ~isin([0,1]); use .loc and .copy().",
+        "solution": "bad = raw[\"gender\"].notna() & ~raw[\"gender\"].isin([0,1])\nreview = raw.loc[bad].copy()\nclean = raw.loc[~bad].copy()\nclean.to_csv(\"septic_shock_cleaned.csv\", index=False)\nMissing gender values are retained by this rule and must be reported and handled separately.",
+        "zh": "这条规则只排除已观察到的非法编码；缺失值另行记录。"
+      }
+    },
+    {
+      "id": "patient-trajectories",
+      "title": "Practical 2 · time, trajectories & alarms",
+      "topic": 1,
+      "minutes": 25,
+      "summary": "Read a long-format clinical time series and distinguish measured values from alarm settings.",
+      "zh": "时间序列先确认患者、时间与单位；报警阈值不是实际报警记录。",
+      "level": "Apply",
+      "outcomes": [
+        "Filter long-format measurements by patient and label.",
+        "Plot observations in chronological order.",
+        "Explain why threshold settings do not prove an alarm occurred."
+      ],
+      "sections": [
+        {
+          "title": "Understand long format",
+          "body": "PatientTrajectory.csv has 8,353 rows and eight columns: ID, charttime, intime, hours, label, value, valuenum and valueuom. A row is a recorded item, not a whole patient. Labels include vital signs, settings and non-numeric information. Filter the exact measurement and patient before plotting; do not connect observations from different patients or admissions. valuenum can be absent when value is textual, so missing numeric entries are not automatically failed measurements. Verify units for the selected label. The supplied hours field is coarse: separate timestamps can share the same integer hour.",
+          "zh": "一行是一条记录，不是一个人；hours可能经过取整，同一小时可以有多个时间点。"
+        },
+        {
+          "title": "Plot what was actually observed",
+          "body": "The notebook first plots heart rate and asks you to add respiratory rate, especially comparing the first 50 hours. Sort timestamps, inspect duplicates and use markers so the measured points remain visible. Lines between observations can suggest continuity that was not measured. If recomputing elapsed time, explicitly parse the date format and inspect the two-digit year assumption before subtracting admission time. Use a fractional hour calculation for subhour differences. The study goal is to describe patterns and uncertainty, not to diagnose a patient from a classroom plot.",
+          "zh": "排序后再画；连线只是视觉辅助，不代表两次测量之间一直被连续观察。",
+          "code": "d = pd.read_csv('Topic1-3/ProgrammingNoSolution/PatientTrajectory.csv')\npid = d['ID'].iloc[0]\nhr = d.loc[(d['ID'] == pid) & (d['label'] == 'Heart Rate')].copy()\nhr['t'] = pd.to_datetime(hr['charttime'], format='%d/%m/%y %H:%M', errors='coerce')\nhr = hr.sort_values('t')\nhr.plot(x='t', y='valuenum', style='o-', ylabel='Heart rate (check source units)')"
+        },
+        {
+          "title": "Read alarm lines correctly",
+          "body": "Resp Alarm - High and Resp Alarm - Low are recorded threshold settings. Overlaying them with respiratory observations helps ask whether a measurement exceeded a recorded limit. It does not demonstrate that an alarm sounded, was acknowledged or was clinically appropriate. The practical’s wording about “points where alarms triggered” overstates what these fields establish. A step plot can represent a setting held until the next update only if that persistence assumption is justified. The two checkpoint versions differ in their plotting choice, which is another reason to inspect assumptions instead of copying a stored solution.",
+          "zh": "超过记录阈值 ≠ 已经实际触发报警；还需要报警事件日志与设备规则。"
+        }
+      ],
+      "pitfalls": [
+        "Connecting unrelated patients into one line.",
+        "Treating integer hours as exact measurement times.",
+        "Treating thresholds as alarm-event logs."
+      ],
+      "mastery": [
+        "Produce labelled heart-rate and respiratory-rate plots for one patient.",
+        "Explain two limitations of an alarm-threshold overlay."
+      ],
+      "sources": [
+        {
+          "file": "Topic1-3/ProgrammingNoSolution/Pract2.ipynb",
+          "locator": "cells 1–20"
+        },
+        {
+          "file": "Topic1-3/ProgrammingNoSolution/Pract2.html",
+          "locator": "full practical and stored examples"
+        },
+        {
+          "file": "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/Day2Pract2Sol-checkpoint.ipynb",
+          "locator": "cells 14–20"
+        },
+        {
+          "file": "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/Pract2Sol-checkpoint.ipynb",
+          "locator": "cells 14–20"
+        },
+        {
+          "file": "Topic1-3/ProgrammingNoSolution/PatientTrajectory.csv",
+          "locator": "header and 8,353-row table"
+        }
+      ],
+      "quiz": [
+        {
+          "question": "A respiratory observation exceeds the plotted high setting. What can you conclude from these fields alone?",
+          "options": [
+            "An audible alarm definitely occurred",
+            "The patient definitely deteriorated",
+            "The observed value exceeds that recorded threshold, subject to time alignment",
+            "The threshold was acknowledged by a nurse"
+          ],
+          "answer": 2,
+          "explanation": "The data contain observations and settings, not the complete alarm-event and acknowledgement process.",
+          "zh": "只能判断与记录阈值的关系，不能证明实际报警。"
+        },
+        {
+          "question": "Several rows have hours=0 but different charttime values. What should you do?",
+          "options": [
+            "Delete all but one row",
+            "Assume timestamps are identical",
+            "Inspect timestamp precision and how hours was derived",
+            "Average all labels together"
+          ],
+          "answer": 2,
+          "explanation": "The integer hours field can lose subhour precision; inspect the original timestamps and label meanings.",
+          "zh": "同一整数小时不代表同一时刻。"
+        }
+      ],
+      "exercise": {
+        "prompt": "Outline a respiratory-rate plot with both alarm settings. State what extra data you need before counting actual alarms.",
+        "hint": "Separate observed values, settings and logged events. Choose a justified rule for aligning settings to observation time.",
+        "solution": "Filter one patient and relevant admission; sort each label by charttime; show respiratory measurements as points and settings as steps only under a documented persistence rule. A time-aligned exceedance count is not an alarm count. Actual alarm events, configuration rules, delays and acknowledgements would be needed for a fuller alarm analysis.",
+        "zh": "必须区分“测量超阈值”与“设备报警事件”。"
+      }
+    },
+    {
+      "id": "missingness-time",
+      "title": "Missing data & the observation process",
+      "topic": 1,
+      "minutes": 18,
+      "summary": "Understand why absent values, irregular measurements and future information need different treatments.",
+      "zh": "缺失和测量频率都可能包含医疗决策信息，但也可能带来偏差。",
+      "level": "Critique",
+      "outcomes": [
+        "Explain why EHR missingness may be informative.",
+        "Distinguish absent, inapplicable and unobserved values.",
+        "Avoid leaking future information when building time-based features."
+      ],
+      "sections": [
+        {
+          "title": "Missing is a question, not a number",
+          "body": "An empty cell says that a value is unavailable in this table. It does not explain why. In a long-format record, valuenum may be empty because the observation is textual; a laboratory result may be absent because no test was ordered; an external encounter may be missing because systems are not linked. Replacing all three with zero creates false information. Begin by classifying what the field means, counting missing values and checking patterns across patients, time and settings. The practical data and EHR lecture together make this a central interpretation skill.",
+          "zh": "空值不是0，也不是“正常”；先查明为什么缺失。"
+        },
+        {
+          "title": "Measurement frequency can carry meaning",
+          "body": "Unwell patients may be measured more often, while people who do not attend care have fewer records. An average over all measurements then gives more influence to frequently measured periods or patients. Repeated rows are also not independent people. Before summarising, define whether the unit is a measurement, patient, admission or time window. Plotting observation times can reveal gaps and bursts that a single mean hides. Statistical labels such as MCAR, MAR and MNAR are useful extensions, but identifying a missingness mechanism requires assumptions and cannot be settled by a missing-value count alone.",
+          "zh": "多次测量不等于多个独立患者；平均前先确定分析单位。"
+        },
+        {
+          "title": "Keep time direction honest",
+          "body": "For a model used at admission, a feature defined as the maximum over the next 24 hours includes future information. It may be legitimate for a model used after 24 hours, if eligibility and outcome timing are defined appropriately. Likewise, backward filling a missing measurement from a later value can leak information into an earlier prediction. Imputation and scaling should learn from training data only when evaluating a predictive model. These are extensions of the practical’s temporal data skills. State the decision time, feature window, outcome window and missing-data plan before assessing performance.",
+          "zh": "前24小时最大值适用于24小时后的决策，不应偷用于入院时预测。"
+        }
+      ],
+      "pitfalls": [
+        "Filling every blank with zero.",
+        "Counting measurements as independent patients.",
+        "Using future observations to fill an earlier feature."
+      ],
+      "mastery": [
+        "Give three distinct reasons for missing data in these practical files.",
+        "Draw a timeline showing eligible features and outcomes for one model."
+      ],
+      "sources": [
+        {
+          "file": "Topic1-3/Session 1- Lecture 2.pdf",
+          "locator": "page 12"
+        },
+        {
+          "file": "Topic1-3/ProgrammingNoSolution/Pract1.ipynb",
+          "locator": "cell 1: first-24-hour features"
+        },
+        {
+          "file": "Topic1-3/ProgrammingNoSolution/Pract2.ipynb",
+          "locator": "cells 1 and 12–19"
+        },
+        {
+          "file": "Topic1-3/原文_健康信息学导论课核心理论与EHR数据特征.pdf",
+          "locator": "pages 17–18"
+        }
+      ],
+      "quiz": [
+        {
+          "question": "A feature uses the maximum laboratory value from the first 24 hours. When is it potentially available without future leakage?",
+          "options": [
+            "At admission",
+            "After the 24-hour observation window, with appropriate eligibility",
+            "At any time because it is a summary",
+            "Before the patient arrives"
+          ],
+          "answer": 1,
+          "explanation": "Availability depends on the prediction time; summarisation does not remove the time at which data become known.",
+          "zh": "汇总变量也有“何时才能知道”的时间。"
+        },
+        {
+          "question": "Why can averaging every measurement distort a patient-level summary?",
+          "options": [
+            "Means cannot be calculated on EHR data",
+            "Every patient has equal numbers of records",
+            "Frequently measured patients or periods can receive more weight",
+            "Missing values always cancel out"
+          ],
+          "answer": 2,
+          "explanation": "The observation process affects how much each person or period contributes.",
+          "zh": "测量次数更多的人或时段可能被赋予更大权重。"
+        }
+      ],
+      "exercise": {
+        "prompt": "A model predicting at noon fills a missing 10:00 observation using a 14:00 value. Explain the problem and propose an alternative plan.",
+        "hint": "Ask what would actually have been known at noon.",
+        "solution": "The 14:00 value is unavailable at prediction time, so using it leaks future information. Define a clinically sensible look-back window using only past observations; report missingness and use a prespecified handling method learned on training data where relevant. Do not assume carrying the last value forward is valid indefinitely.",
+        "zh": "所有输入都必须在实际预测时已经可用；过去值也不能无限期当作当前值。"
+      }
+    },
+    {
+      "id": "scientific-integrity",
+      "title": "Think like a scientist, report like one",
+      "topic": 3,
+      "minutes": 20,
+      "summary": "Use falsifiable questions, organised scepticism and transparent analysis to make your conclusions defensible.",
+      "zh": "科研不是寻找想要的答案，而是用透明的方法检验问题，并接受反证。",
+      "level": "Critique",
+      "outcomes": [
+        "Explain induction and falsification with their limits.",
+        "Apply the CUDOS norms to an MSc project.",
+        "Recognise p-hacking and distinguish it from transparent exploration."
+      ],
+      "sections": [
+        {
+          "title": "Make a claim that evidence can challenge",
+          "body": "The lecture describes a cycle of observation, question, hypothesis, study, analysis and revised understanding. Induction moves from observations towards general claims. Deduction derives expectations from a theory; scientific work commonly uses both. Observing many white swans does not logically prove every swan is white; a genuine black swan contradicts that universal claim. Statistical testing is more complicated because measurements vary and models make assumptions. Avoid the transcript’s “swans have no colour” null-hypothesis analogy. A statistical null must be explicitly defined for the research question; it is not simply a neutral-sounding sentence.",
+          "zh": "归纳用于形成概括，演绎用于推出可检验预期；统计零假设必须具体定义。"
+        },
+        {
+          "title": "Use CUDOS as everyday habits",
+          "body": "Communalism means contributing methods and knowledge to a shared scientific enterprise. Universalism means assessing claims by evidence rather than status or identity. Disinterestedness means avoiding personal attachment to a preferred result and declaring conflicts. Organised scepticism means examining methods before accepting a conclusion. In health research, sharing must respect access and confidentiality constraints: openness does not mean posting patient records online. For an MSc project, record decisions, describe limitations and make code and methodology reviewable where permitted. Criticism of a method is an opportunity to improve the work.",
+          "zh": "共享科学方法不等于公开患者数据；批评方法有助于改进研究。"
+        },
+        {
+          "title": "Separate discovery from confirmation",
+          "body": "Exploration is legitimate when reported as exploration. P-hacking occurs when many analytical choices are tried to obtain a favourable significance result and the unsuccessful choices are hidden. Changing subgroups, exclusions or outcomes after inspecting results can make evidence appear stronger than it is. Predefine confirmatory questions and analysis where possible, keep an analysis log, disclose deviations and report uncertainty and relevant non-significant findings. The lecture’s warning about publication incentives is a warning to defend your methodology, not merely deliver an attractive p-value. A robust conclusion may be that the evidence remains uncertain.",
+          "zh": "探索可以做，但要如实报告；隐藏多次尝试，只展示显著结果，会夸大证据。"
+        }
+      ],
+      "pitfalls": [
+        "Calling a non-significant result proof of no effect.",
+        "Treating p<0.05 as proof a hypothesis is true.",
+        "Making analysis decisions depend on which result looks publishable."
+      ],
+      "mastery": [
+        "Critique a study’s question, assumptions, exclusions and conclusion.",
+        "Write a short analysis log and separate planned from exploratory work."
+      ],
+      "sources": [
+        {
+          "file": "Topic1-3/Session 3 - Lecture 1.pdf",
+          "locator": "pages 4–13"
+        },
+        {
+          "file": "Topic1-3/原文_健康信息学伦理与科学方法导论.pdf",
+          "locator": "pages 3–9"
+        },
+        {
+          "file": "Topic1-3/纪要_健康信息学伦理与科学方法导论.md",
+          "locator": "scientific-method and CUDOS summaries; analogy corrected"
+        }
+      ],
+      "quiz": [
+        {
+          "question": "A researcher tests twenty outcomes and reports only the one with p<0.05 as if it were prespecified. What is the central issue?",
+          "options": [
+            "Using twenty outcomes is always forbidden",
+            "Selective reporting hides the analytical search",
+            "The smallest p-value is necessarily causal",
+            "A larger sample fixes the reporting problem"
+          ],
+          "answer": 1,
+          "explanation": "The reported evidence omits the multiplicity and selection process. Transparent exploration and appropriate confirmatory analysis differ from this practice.",
+          "zh": "问题在于隐瞒选择过程，把探索包装成事先计划。"
+        },
+        {
+          "question": "What best reflects organised scepticism?",
+          "options": [
+            "Reject every result from a famous researcher",
+            "Accept a result because it is published",
+            "Inspect methods and evidence before accepting the claim",
+            "Require every study to report significance"
+          ],
+          "answer": 2,
+          "explanation": "Claims are evaluated through methodological scrutiny rather than prestige or a preferred result.",
+          "zh": "看证据和方法，不看名气或结果是否合心意。"
+        }
+      ],
+      "exercise": {
+        "prompt": "You try five exclusion rules and only one yields a significant association. Draft an honest results statement and next step.",
+        "hint": "Disclose that the rules were explored and describe sensitivity.",
+        "solution": "We explored five exclusion rules; the association met the chosen significance threshold under one rule only. The result was sensitive to analytical choices and should be considered exploratory. Report all specifications and effect estimates, explain the rules, and test a prespecified analysis in suitable independent data if available.",
+        "zh": "诚实报告所有分析版本，并把不稳定结果标为探索性发现。"
+      }
+    },
+    {
+      "id": "ethical-reasoning",
+      "title": "Reason through healthcare data ethics",
+      "topic": 3,
+      "minutes": 20,
+      "summary": "Balance autonomy, benefit, harm and justice in a concrete data-use proposal.",
+      "zh": "伦理回答需要说明情境、利益、风险与保障，而不是只背原则名称。",
+      "level": "Critique",
+      "outcomes": [
+        "Apply respect for persons, beneficence, non-maleficence and justice.",
+        "Separate ethical justification from technical capability.",
+        "Evaluate a proposed data use with proportionate safeguards."
+      ],
+      "sections": [
+        {
+          "title": "Name the people and the purpose",
+          "body": "Ethical reasoning begins with a concrete proposal: whose data, used by whom, for what purpose, with what possible consequences? Respect for persons includes autonomy and attention to people who need additional protection. Beneficence asks how the work could help. Non-maleficence asks how harm can be prevented or reduced. Justice asks who carries risks and who receives benefits. The lecture uses these four lenses. A historical correction matters: the original Belmont Report names three principles—respect for persons, beneficence and justice—with avoiding harm addressed within beneficence.",
+          "zh": "课堂四个分析角度可以使用；但Belmont原报告列的是三个基本原则。"
+        },
+        {
+          "title": "Identify a real tension",
+          "body": "A mental health study may promise better services while involving sensitive records and people whose ability to decide may vary. Neither “public benefit” nor “vulnerability” automatically answers whether the study should proceed. Consider the importance of the question, necessity of the data, less intrusive alternatives, representation of affected groups and safeguards. Excluding a vulnerable group without thought may also reduce the evidence available to improve its care. Capacity should not be inferred solely from a diagnostic label. Ethical analysis should state the relevant uncertainty and who is responsible for resolving it.",
+          "zh": "不能因诊断严重精神疾病就自动认定没有决定能力；排除脆弱群体也可能加剧证据不平等。"
+        },
+        {
+          "title": "Give a justified, bounded recommendation",
+          "body": "Privacy concerns appropriate access to personal information; confidentiality concerns obligations to protect entrusted information. Consent, anonymisation and pseudonymisation are important, but none is a universal shortcut that resolves every issue. Technical interoperability does not itself authorise sharing. A good MSc response recommends a specific scope, minimum necessary data, appropriate access, patient involvement, review and monitoring. Governance details depend on the project and current applicable rules. The transcript’s broad statements about service improvement and opt-outs should not be used as blanket permissions; the website’s Topic 4 material develops these distinctions further.",
+          "zh": "“技术上能共享”不等于“已经获准共享”；具体权限与规则需要按项目核实。"
+        }
+      ],
+      "pitfalls": [
+        "Using “it benefits society” as a complete justification.",
+        "Assuming anonymisation removes every ethical concern.",
+        "Treating all patients with one diagnosis as lacking capacity."
+      ],
+      "mastery": [
+        "Write a balanced recommendation with benefits, risks, safeguards and remaining questions.",
+        "Explain why reasonable ethical trade-offs still require explicit justification."
+      ],
+      "sources": [
+        {
+          "file": "Topic1-3/Session 3 - Lecture 1.pdf",
+          "locator": "pages 15–19"
+        },
+        {
+          "file": "Topic1-3/原文_健康信息学伦理与科学方法导论.pdf",
+          "locator": "pages 9–16"
+        },
+        {
+          "file": "Topic1-3/纪要_健康信息学伦理与科学方法导论.md",
+          "locator": "ethical principles and governance discussion; broad claims qualified"
+        },
+        {
+          "file": "Topic1-3/原文_Ethics课程收尾与周五测验通知.pdf",
+          "locator": "page 1: historical course notice only"
+        }
+      ],
+      "quiz": [
+        {
+          "question": "A team can technically link sensitive records and expects public benefit. What is the best next reasoning step?",
+          "options": [
+            "Link everything immediately",
+            "Assess necessity, appropriate authority, risks, safeguards and affected people’s views",
+            "Assume all patients lack objections",
+            "Publish the identifiable dataset for openness"
+          ],
+          "answer": 1,
+          "explanation": "Potential benefit and technical feasibility do not settle ethical or governance requirements.",
+          "zh": "还要考虑必要性、权限、风险与保障。"
+        },
+        {
+          "question": "Why might automatically excluding a vulnerable population be ethically problematic?",
+          "options": [
+            "It always makes research illegal",
+            "It guarantees bias disappears",
+            "It may deny that group a fair share of research benefits",
+            "It eliminates privacy concerns"
+          ],
+          "answer": 2,
+          "explanation": "Justice includes fair distribution of benefits as well as protection from harm. Appropriate inclusion requires safeguards.",
+          "zh": "保护与公平参与要一起考虑。"
+        }
+      ],
+      "exercise": {
+        "prompt": "A Trust proposes a model to identify people likely to miss follow-up. Give a balanced ethical recommendation in 150 words.",
+        "hint": "Discuss benefit, stigma or exclusion, data minimisation, involvement and evaluation.",
+        "solution": "Potential benefit is more timely support, but labels could stigmatise patients or reduce access. Clarify the intended supportive action and permitted data use, minimise information, involve patients and clinicians, evaluate performance and consequences across groups, and maintain human review. Confirm the relevant governance route before development and monitor whether the intervention actually improves care.",
+        "zh": "不能只讨论模型准确率；还要讨论标签带来的后果和不同群体是否公平受益。"
+      }
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Health informatics",
+      "zh": "健康信息学",
+      "definition": "Using data, information and knowledge to improve health and care."
+    },
+    {
+      "term": "EHR",
+      "zh": "电子健康记录",
+      "definition": "A computer-processable record of patient health information across recorded encounters."
+    },
+    {
+      "term": "EMR",
+      "zh": "电子医疗记录",
+      "definition": "Often a narrower institution- or practice-centred clinical record; usage overlaps with EHR."
+    },
+    {
+      "term": "PHR",
+      "zh": "个人健康记录",
+      "definition": "A record organised around an individual managing their health information."
+    },
+    {
+      "term": "Learning Health System",
+      "zh": "学习型医疗系统",
+      "definition": "A system that turns care data into learning, applies it and evaluates the resulting care."
+    },
+    {
+      "term": "Primary use",
+      "zh": "主要用途",
+      "definition": "Use of records to support the person’s care."
+    },
+    {
+      "term": "Secondary use",
+      "zh": "二次用途",
+      "definition": "Reuse for purposes such as research, service planning or evaluation."
+    },
+    {
+      "term": "Data provenance",
+      "zh": "数据来源与处理轨迹",
+      "definition": "Where data came from and what happened to them before analysis."
+    },
+    {
+      "term": "Selection bias",
+      "zh": "选择偏差",
+      "definition": "Systematic differences introduced by who enters or remains in the analysed sample."
+    },
+    {
+      "term": "Confounding",
+      "zh": "混杂",
+      "definition": "A factor related to exposure and outcome can distort the association used to estimate a causal effect."
+    },
+    {
+      "term": "Interoperability",
+      "zh": "互操作性",
+      "definition": "The ability to exchange, interpret and use data across systems and organisations."
+    },
+    {
+      "term": "Semantic interoperability",
+      "zh": "语义互操作性",
+      "definition": "Preserving shared meaning when information is exchanged."
+    },
+    {
+      "term": "ICD",
+      "zh": "国际疾病分类",
+      "definition": "A classification supporting consistent disease and health-related reporting."
+    },
+    {
+      "term": "SNOMED CT",
+      "zh": "临床术语体系",
+      "definition": "A clinical terminology connecting concepts, descriptions and relationships."
+    },
+    {
+      "term": "Ontology",
+      "zh": "本体",
+      "definition": "A formal representation of concepts and relationships in a domain."
+    },
+    {
+      "term": "Polyhierarchy",
+      "zh": "多重层级",
+      "definition": "A concept may have more than one parent in a subtype hierarchy."
+    },
+    {
+      "term": "Entity recognition",
+      "zh": "实体识别",
+      "definition": "Finding text spans referring to relevant concepts such as medicines or conditions."
+    },
+    {
+      "term": "Entity linking",
+      "zh": "实体链接",
+      "definition": "Connecting a recognised text span to a terminology concept."
+    },
+    {
+      "term": "Missingness",
+      "zh": "缺失机制与模式",
+      "definition": "How and why values are absent from a dataset."
+    },
+    {
+      "term": "Data leakage",
+      "zh": "数据泄漏／未来信息泄露",
+      "definition": "Using information in model development or evaluation that would not be available at the intended prediction point."
+    },
+    {
+      "term": "P-hacking",
+      "zh": "选择性追求显著结果",
+      "definition": "Trying analytical options to obtain significance and hiding the search or unsuccessful analyses."
+    },
+    {
+      "term": "Falsification",
+      "zh": "证伪",
+      "definition": "Seeking evidence that could contradict a claim."
+    },
+    {
+      "term": "CUDOS",
+      "zh": "科学规范",
+      "definition": "Communalism, Universalism, Disinterestedness and Organised Scepticism."
+    },
+    {
+      "term": "Autonomy",
+      "zh": "自主性",
+      "definition": "Respecting a person’s ability and opportunity to make informed choices."
+    },
+    {
+      "term": "Beneficence",
+      "zh": "行善",
+      "definition": "Seeking worthwhile benefits from the work."
+    },
+    {
+      "term": "Non-maleficence",
+      "zh": "不伤害",
+      "definition": "Avoiding or reducing harms."
+    },
+    {
+      "term": "Justice",
+      "zh": "公正",
+      "definition": "Considering fair distribution of risks and benefits."
+    },
+    {
+      "term": "Confidentiality",
+      "zh": "保密义务",
+      "definition": "The obligation to protect information entrusted to you."
+    },
+    {
+      "term": "Fully Specified Name (FSN)",
+      "zh": "完全指定名称",
+      "definition": "A SNOMED CT description intended to express a concept’s meaning unambiguously, distinct from the synonym selected for display."
+    },
+    {
+      "term": "Attribute relationship",
+      "zh": "属性关系",
+      "definition": "A relationship describing a property of a concept, such as finding site; distinct from an is-a subtype link."
+    },
+    {
+      "term": "Data engineering",
+      "zh": "数据工程",
+      "definition": "Building and maintaining the pipelines and transformations that turn source data into usable analytical data."
+    }
+  ],
+  "notes": [
+    {
+      "title": "How to use mastery targets",
+      "body": "Explain / Apply / Critique targets are study guidance inferred from the supplied learning outcomes and practical tasks. They are not an official KCL marking rubric or an exhaustive MSc syllabus. English is the main teaching language; Chinese aids clarify difficult distinctions."
+    },
+    {
+      "title": "Source hierarchy and recording quality",
+      "body": "Lecture slides and original practical prompts anchor coverage. Full transcripts supply teaching context but contain speech-recognition errors, interruptions and informal examples. Meeting notes are secondary summaries. Administrative notices are historical, not current deadlines."
+    },
+    {
+      "title": "Scope and unavailable material",
+      "body": "Topics 1–3 include foundations, EHR limitations, interoperability, ethics and two pandas practicals. The NLP recording previews a separate module; detailed NLP slides and exercises are not supplied here. Four checkpoint notebooks and a cleaned septic-shock CSV exist only as iCloud placeholders in the source inventory and cannot be read as substantive files."
+    },
+    {
+      "title": "Practical duplication and corrections",
+      "body": "Pract1.html and Pract2.html mirror their notebooks with stored outputs. The two Practical 2 solution checkpoints are near-duplicates with old paths and a different low-threshold plotting choice. They are reference aids, not independent assessments. No source notebook code was executed. Pract1’s simulated_data.csv and eleven-feature wording conflict with the supplied septic_shock.csv and 16-column schema."
+    },
+    {
+      "title": "Alarm settings are not events",
+      "body": "Practical 2 describes threshold lines as points where an alarm triggered. The fields are threshold settings; actual triggering requires event logs and device rules. A plotted exceedance should not be reported as a confirmed alarm."
+    },
+    {
+      "title": "SNOMED hierarchy correction",
+      "body": "The transcript and its summary suggest cyclic relationships. SNOMED CT’s subtype hierarchy is a directed acyclic graph; multiple parents do not create a cycle.",
+      "url": "https://docs.snomed.org/snomed-international-documents/snomed-ct-glossary/d/directed-acyclic-graph"
+    },
+    {
+      "title": "CDA clarification",
+      "body": "The slide shorthand associates CDA with unstructured exchange. CDA can contain structured entries as well as narrative; it is not limited to PDFs or unstructured text.",
+      "url": "https://www.hl7.org/cda/stds/online-navigation/infrastructure/cda/cda.htm"
+    },
+    {
+      "title": "Belmont clarification",
+      "body": "The lecture presents four ethical lenses under Belmont. The original US report lists three principles: respect for persons, beneficence and justice. Avoidance of harm is discussed under beneficence.",
+      "url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/read-the-belmont-report/index.html"
+    },
+    {
+      "title": "Scientific-method clarification",
+      "body": "The recording’s induction-only description and colourless-swan null analogy should not be memorised as general statistical rules. Science combines observations, theory and testable predictions; a statistical null is defined for a specific question. Exploratory preparation in the SLE example does not turn a treatment-effect question into proof by prediction."
+    },
+    {
+      "title": "Clinical and governance examples",
+      "body": "Historic laboratory ranges, treatment examples and informal opt-out/service-improvement statements in the source material are not universal clinical thresholds or blanket permissions. The learning site teaches data reasoning, and Topic 4 develops project-specific governance distinctions."
+    },
+    {
+      "title": "Visual source audit",
+      "body": "All 108 pages across the six Session PDFs were rendered and visually reviewed, including diagrams that text extraction missed. The learning content now explicitly covers the data-science pyramid, OpenHIE architecture, SNOMED description types and attribute relationships. All seven Tutorial 1 tasks are addressed in the Learning Health System worked exercise. Historical reading suggestions shown in slides are references, not supplied full papers."
+    }
+  ]
+}

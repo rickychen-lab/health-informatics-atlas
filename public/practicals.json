@@ -1,0 +1,382 @@
+{
+  "labs": [
+    {
+      "id": "cohort",
+      "title": "Clean a cohort without losing the story",
+      "subtitle": "Practical 1 · Inspect → explain → clean → verify · 60–90 minutes",
+      "source": "Pract1.ipynb, cells 0–21; Pract1.html; septic_shock.csv. Run steps in order in a fresh notebook beside the downloaded CSV.",
+      "files": [
+        "Topic1-3/ProgrammingNoSolution/Pract1.ipynb",
+        "Topic1-3/ProgrammingNoSolution/Pract1.html",
+        "Topic1-3/ProgrammingNoSolution/septic_shock.csv"
+      ],
+      "steps": [
+        {
+          "title": "01 · Read the table, then question its description",
+          "prompt": "Load the supplied file. How many patients and columns are present? Separate identifier, predictors and outcomes before doing anything else.",
+          "hint": "Use shape, columns and dtypes. A column stored as an integer may still represent a category.",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\nraw = pd.read_csv('septic_shock.csv')\nprint(raw.shape)\nprint(raw.columns.tolist())\nprint(raw.dtypes)\nprint('Unique subjects:', raw['Subject_ID'].nunique())\nprint('Outcomes:', ['Mortality', 'LOS'])",
+          "answer": "The file contains 1,000 rows and 16 columns: one identifier, 13 candidate predictors and two outcomes. There are only 760 distinct Subject_ID values, despite the notebook’s claim of one record per patient; investigate reused IDs or repeat observations before treating rows as independent people. The introduction says 11 features and initially names simulated_data.csv; the actual file and schema take precedence. Mortality is a 0/1 outcome; LOS is length of stay. An identifier is not a clinically meaningful predictor.",
+          "zh": "先看真实数据，再核对说明。1,000 行只有 760 个不同的 Subject_ID，不能直接声称是 1,000 位独立病人。整数也可能是类别编码。"
+        },
+        {
+          "title": "02 · Make an error visible",
+          "prompt": "Plot the requested columns. Find values outside the documented gender coding, remove those rows as the practical requests, then plot again.",
+          "hint": "Use isin([0, 1]), not a numerical outlier rule. Do not treat this teaching file’s binary coding as a universal description of sex or gender.",
+          "code": "columns = ['Mortality', 'LOS', 'gender', 'age', 'comorbidity']\nraw[columns].plot(kind='box', subplots=True, layout=(2, 3),\n                  figsize=(12, 6), sharey=False)\nplt.tight_layout()\nbad_gender = ~raw['gender'].isin([0, 1])\nprint('Invalid gender rows:', int(bad_gender.sum()))\nprint('Invalid values:', raw.loc[bad_gender, 'gender'].unique())\ngender_clean = raw.loc[~bad_gender].copy()\nprint('Rows left:', len(gender_clean))\ngender_clean[columns].plot(kind='box', subplots=True,\n                          layout=(2, 3), figsize=(12, 6), sharey=False)\nplt.tight_layout()",
+          "answer": "Exactly one row has gender = 56. Removing it leaves 999 rows. A box plot helps discover the problem, but the data dictionary determines why the value is invalid. For a real analysis, investigate the source before deciding whether to correct a cell, mark it missing, or remove an entire record.",
+          "zh": "箱线图只能提示“可疑”；编码规则才告诉你“为什么错”。这里按原练习要求删除整行，但真实研究应记录理由。"
+        },
+        {
+          "title": "03 · State your cleaning rule before applying it",
+          "prompt": "Describe heart rate and temperatures. Apply an explicit illustrative screening rule and retain missing measurements for separate review.",
+          "hint": "For this worked example only: heart rate 1–300, temperatures 25–45. These are broad audit bounds, not normal ranges or clinical decision thresholds. Combine row-level flags with |.",
+          "code": "measures = ['heartrate_min', 'temp_min', 'temp_max']\nprint(gender_clean[measures].describe())\nbad_hr = ~gender_clean['heartrate_min'].between(1, 300)\nbad_tmin = (gender_clean['temp_min'].notna() &\n            ~gender_clean['temp_min'].between(25, 45))\nbad_tmax = (gender_clean['temp_max'].notna() &\n            ~gender_clean['temp_max'].between(25, 45))\nflagged = bad_hr | bad_tmin | bad_tmax\nclean = gender_clean.loc[~flagged].copy()\nprint('Additional removed:', int(flagged.sum()))\nprint('Rows retained:', len(clean))\nprint(clean[measures].agg(['min', 'max']).round(3))",
+          "answer": "The original file contains heart rates up to 875, temperatures above 1,100, and minimum temperatures of 0, 3 and 3.5. These stated rules remove 9 additional rows after gender cleaning, leaving 990. Remaining ranges: heart rate 19–132; minimum temperature 27.900–38.778; maximum temperature 32.556–41.000. Other defensible rules may give different totals: explain your choice instead of guessing the lecturer’s intended cutoff.",
+          "zh": "先写规则再筛选，避免为了得到某个答案而调整阈值。缺失值不是异常值；此处先保留，下一步单独检查。"
+        },
+        {
+          "title": "04 · Count what was never measured",
+          "prompt": "Audit missingness before using dropna. How much of the cohort would disappear if you required every column to be complete?",
+          "hint": "A missing laboratory test can reflect the care process. Avoid silently deleting a person because an unrelated variable is missing.",
+          "code": "missing = pd.DataFrame({\n    'missing_n': raw.isna().sum(),\n    'missing_pct': raw.isna().mean().mul(100)\n})\nprint(missing[missing['missing_n'].gt(0)].round(1))\nprint('Complete rows in original:', len(raw.dropna()))\nprint('Complete rows after our cleaning:', len(clean.dropna()))\nprint('Observed LOS after cleaning:', clean['LOS'].notna().sum())",
+          "answer": "Both respiratory-rate columns are missing in 522/1,000 rows (52.2%). Other original missing counts: troponin 94, bilirubin 137, urea 14, comorbidity 38, LOS 10, minimum temperature 6 and maximum temperature 7. Complete-case deletion retains only 376 original rows, or 370 of our 990 cleaned rows. This is an added audit checkpoint, not a missing-data imputation task in Practical 1.",
+          "zh": "全部列都不能缺失的要求会丢掉大量样本。先说明分析需要哪些变量，再决定缺失值策略；不要把 NaN 自动填成 0。"
+        },
+        {
+          "title": "05 · Verify and export a reproducible result",
+          "prompt": "Replot the measures, check your declared rules and save the cleaned file without an extra index column.",
+          "hint": "The cleaned CSV is an output you create. The supplied folder only has an iCloud placeholder for an old cleaned file.",
+          "code": "assert clean['gender'].isin([0, 1]).all()\nassert clean['heartrate_min'].between(1, 300).all()\nfor c in ['temp_min', 'temp_max']:\n    assert clean[c].dropna().between(25, 45).all()\nclean[['heartrate_min', 'temp_min', 'temp_max']].plot(\n    kind='box', subplots=True, layout=(1, 3), figsize=(11, 4), sharey=False)\nplt.tight_layout()\nclean.to_csv('septic_shock_cleaned.csv', index=False, encoding='utf-8')\nreloaded = pd.read_csv('septic_shock_cleaned.csv')\nassert reloaded.shape == clean.shape\nassert reloaded.columns.tolist() == raw.columns.tolist()\nprint('Saved shape:', reloaded.shape)",
+          "answer": "The exported worked-example file has shape (990, 16) and no Unnamed: 0 column. The original dataset is unchanged. Keep the code, declared bounds and removed-row counts alongside any cleaned dataset so another person can reproduce it.",
+          "zh": "能复现比“看起来干净”更重要。index=False 避免把行号写成新变量。此网站没有修改原始文件。"
+        },
+        {
+          "title": "06 · Explain what cleaning has not solved",
+          "prompt": "Write three sentences: what was removed, what uncertainty remains, and why a cleaner-looking table is not automatically ready for modelling.",
+          "hint": "Inspect remaining suspicious values without inventing replacements or treating an association as a causal effect.",
+          "code": "print('Negative troponin values in original:', int(raw['troponin_max'].lt(0).sum()))\nprint('Negative comorbidity values in original:', int(raw['comorbidity'].lt(0).sum()))\nprint('Temperature order violations after cleaning:',\n      int(clean['temp_min'].gt(clean['temp_max']).sum()))\nprint('Mortality fraction in original:', raw['Mortality'].mean())",
+          "answer": "A strong response: “I removed 10 rows under documented coding and plausibility rules. Missing measurements and other suspect fields still require source review: the original data contain one negative troponin and 16 negative comorbidity values. Removing records may change who is represented; these checks do not establish data validity or justify a prediction model.” Original mortality fraction is 0.367, a description of this dataset only.",
+          "zh": "清理完成不等于可以直接建模。发现新问题时先标记、核对定义和单位，不要凭感觉把负数改成正数。"
+        }
+      ],
+      "checks": [
+        "I can identify one observation, predictors, an identifier and outcomes.",
+        "I can explain why each row was removed and reproduce the 990-row worked example.",
+        "I preserve missing values until I have an analysis-specific plan.",
+        "I can export and reload the same 16 columns without adding an index."
+      ]
+    },
+    {
+      "id": "trajectory",
+      "title": "Read a patient’s timeline",
+      "subtitle": "Practical 2 · Long data → aligned time → vital signs → alarm settings · 60–90 minutes",
+      "source": "Pract2.ipynb, cells 0–19; Pract2.html; PatientTrajectory.csv. Two older solution checkpoints were also checked. Run sequentially beside PatientTrajectory.csv.",
+      "files": [
+        "Topic1-3/ProgrammingNoSolution/Pract2.ipynb",
+        "Topic1-3/ProgrammingNoSolution/Pract2.html",
+        "Topic1-3/ProgrammingNoSolution/PatientTrajectory.csv"
+      ],
+      "steps": [
+        {
+          "title": "01 · Recognise the unit of observation",
+          "prompt": "Load the trajectory. Does one row mean one patient, one hour, or one recorded item? Count patients, labels and nonnumeric entries.",
+          "hint": "The long table stores a label–value pair per row. Missing valuenum can simply mean that the original value is text.",
+          "code": "import numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\ntrajectory = pd.read_csv('PatientTrajectory.csv')\nprint('Shape:', trajectory.shape)\nprint('People:', trajectory['ID'].nunique())\nprint('Distinct labels:', trajectory['label'].nunique())\nprint('Missing numeric values:', trajectory['valuenum'].isna().sum())\nprint(trajectory.loc[trajectory['label'].isin(\n    ['Heart Rate', 'Respiratory Rate']), 'label'].value_counts())",
+          "answer": "There are 8,353 rows, 8 columns, one patient and 310 distinct labels. Heart Rate and Respiratory Rate each appear 168 times. There are 5,634 missing valuenum values, but many rows describe text or categorical information; this is not evidence that 5,634 physiological measurements were lost.",
+          "zh": "一行是一条记录，不是一位病人。文字记录没有数值是合理的，不能把所有 valuenum 缺失都当成数据错误。"
+        },
+        {
+          "title": "02 · Put observations in the correct order",
+          "prompt": "Parse timestamps explicitly, calculate elapsed hours from admission and sort. Compare exact elapsed time with the supplied hours field.",
+          "hint": "The supplied dates use day/month/two-digit-year. Work with time since admission; the calendar year should not be interpreted as a real admission year.",
+          "code": "trajectory['time'] = pd.to_datetime(trajectory['charttime'], format='%d/%m/%y %H:%M')\ntrajectory['admit'] = pd.to_datetime(trajectory['intime'], format='%d/%m/%y %H:%M')\ntrajectory['elapsed_h'] = (trajectory['time'] - trajectory['admit']).dt.total_seconds() / 3600\ntrajectory = trajectory.sort_values(['ID', 'time'])\nprint('Elapsed range:', trajectory['elapsed_h'].agg(['min', 'max']).round(3))\nprint('Supplied hours equal floored elapsed hours:',\n      np.array_equal(trajectory['hours'].to_numpy(),\n                     np.floor(trajectory['elapsed_h']).astype(int).to_numpy()))",
+          "answer": "All observations occur between 0 and 172.783 hours after admission. Supplied hours equal the floor of exact elapsed hours. Different times within the same hour can therefore have the same hours value. The first vital-sign measurement is at 0.233 hours, not exactly at admission.",
+          "zh": "hours 把小数小时向下取整。例如 0.2 小时和 0.8 小时都会显示为 0；精确时间更适合对齐不同记录。"
+        },
+        {
+          "title": "03 · Plot the two vital signs",
+          "prompt": "Plot heart rate and respiratory rate on separate labelled axes. Inspect the first 50 elapsed hours, then the full stay.",
+          "hint": "Use units on the y-axis and a common x-axis. A large change on one scale is not directly comparable to the same visual height on another.",
+          "code": "labels = ['Heart Rate', 'Respiratory Rate']\nunits = ['beats/min', 'breaths/min']\nfig, axes = plt.subplots(2, 1, figsize=(12, 7), sharex=True)\nfor ax, label, unit in zip(axes, labels, units):\n    s = trajectory.loc[trajectory['label'].eq(label)]\n    ax.plot(s['elapsed_h'], s['valuenum'], marker='.', linewidth=1)\n    ax.set_ylabel(f'{label} ({unit})')\n    early = s.loc[s['elapsed_h'].between(0, 50), 'valuenum']\n    print(label, 'first 50h:', early.agg(['count', 'min', 'max', 'mean']).round(2).to_dict())\naxes[-1].set_xlabel('Hours since ICU admission')\nplt.tight_layout()",
+          "answer": "Full-stay heart rate ranges 80–152 and respiratory rate 5–43. Using exact elapsed time ≤50 hours gives 50 readings per signal: heart rate mean 99.54 (80–117), respiratory rate mean 17.68 (10–30). Respiratory rate rises over parts of the early period, while heart rate fluctuates; write a description of the chart, not a diagnosis. Filtering the rounded hours ≤50 includes an extra reading and gives different means.",
+          "zh": "先描述趋势，再谈解释。仅凭一张图不能判断治疗效果或给病人下诊断；筛选精确时间和整数小时会得到不同结果。"
+        },
+        {
+          "title": "04 · Compare measurements taken at the same time",
+          "prompt": "The practical asks whether the two signals correspond. Pair simultaneous observations and quantify their association as an optional check.",
+          "hint": "Do not pair the first heart-rate row with the first respiratory row merely because both series have 168 rows.",
+          "code": "vital = trajectory.loc[trajectory['label'].isin(labels)]\nassert not vital.duplicated(['ID', 'time', 'label']).any()\nwide = vital.pivot(index=['ID', 'time'], columns='label', values='valuenum')\npaired = wide.dropna(subset=labels)\nprint('Paired timestamps:', len(paired))\nprint('Pearson correlation:', round(paired['Heart Rate'].corr(paired['Respiratory Rate']), 4))\npaired.plot.scatter(x='Heart Rate', y='Respiratory Rate', alpha=0.6)\nplt.tight_layout()",
+          "answer": "Only 165 timestamps have both signals, despite 168 records for each. Their whole-stay Pearson correlation is approximately −0.2078. This small overall negative association can hide different patterns in different periods, does not describe a causal relationship, and ignores temporal autocorrelation. Pairing by row position would answer the wrong question.",
+          "zh": "长度相同不代表测量时间相同。先按时间配对，再算相关；整体相关系数也可能掩盖局部趋势。"
+        },
+        {
+          "title": "05 · Draw thresholds as settings, not events",
+          "prompt": "Overlay the low and high respiratory alarm settings on the respiratory observations. Explain what the lines mean.",
+          "hint": "Use step(..., where=\"post\") so a recorded setting persists forwards until the next setting. An alarm threshold is not an alarm log.",
+          "code": "rr = trajectory.loc[trajectory['label'].eq('Respiratory Rate')]\nfig, ax = plt.subplots(figsize=(12, 5))\nax.plot(rr['elapsed_h'], rr['valuenum'], 'k+', label='Respiratory rate')\nfor label, colour in [('Resp Alarm - Low', '#287f82'),\n                      ('Resp Alarm - High', '#c26851')]:\n    s = trajectory.loc[trajectory['label'].eq(label)]\n    ax.step(s['elapsed_h'], s['valuenum'], where='post',\n            color=colour, label=label)\nax.set(xlabel='Hours since ICU admission', ylabel='Breaths/min', ylim=(0, 55))\nax.legend()\nplt.tight_layout()",
+          "answer": "There are 19 recorded low settings and 19 high settings. The low setting remains 8; high settings range from 30 to 45. The original practical describes these lines as points where alarms triggered. That interpretation is not supported: the labels encode settings, and there is no actual alarm-event log in the supplied table.",
+          "zh": "阈值线表示“设置的界限”，不是“真的响过警报”。超过阈值也不能证明警报已触发，实际系统还可能有持续时间等规则。"
+        },
+        {
+          "title": "06 · Identify possible breaches without looking into the future",
+          "prompt": "For each respiratory reading, attach the most recently recorded settings. Count values below/above them and keep readings with unknown prior settings separate.",
+          "hint": "merge_asof with direction=\"backward\" uses information available at that time. This is a transparent extension of the plotting question.",
+          "code": "rr_check = rr[['time', 'valuenum']].sort_values('time').rename(columns={'valuenum': 'rr'})\nfor label, col in [('Resp Alarm - Low', 'low'), ('Resp Alarm - High', 'high')]:\n    settings = trajectory.loc[trajectory['label'].eq(label), ['time', 'valuenum']]\n    settings = settings.sort_values('time').rename(columns={'valuenum': col})\n    rr_check = pd.merge_asof(rr_check, settings, on='time', direction='backward')\nknown = rr_check.dropna(subset=['low', 'high'])\nprint('Known settings:', len(known))\nprint('Below low:', int(known['rr'].lt(known['low']).sum()))\nprint('Above high:', int(known['rr'].gt(known['high']).sum()))\nprint('No prior setting:', len(rr_check) - len(known))",
+          "answer": "Assuming a setting takes effect at its recorded timestamp and persists until updated, 164 observations have both prior settings: 14 are strictly below the low value and 7 strictly above the high value. Four earlier readings have unknown settings. These are possible threshold breaches, not proven alarms or proof that the patient was safe at other times.",
+          "zh": "只用当时已经知道的信息。没有更早的设置记录时应写“不知道”，不能用未来的阈值倒填。"
+        }
+      ],
+      "checks": [
+        "I can distinguish a patient, a recorded item and a measurement time.",
+        "I can produce correctly labelled heart-rate and respiratory-rate plots.",
+        "I align observations by timestamp before comparing them.",
+        "I can distinguish alarm settings, potential threshold breaches and actual alarm events."
+      ]
+    },
+    {
+      "id": "privacy",
+      "title": "Break de-identification, then measure the defence",
+      "subtitle": "Topic 4 · Synthetic data only · Linkage, HMAC, k-anonymity, l-diversity and differential privacy · 2–3 hours",
+      "source": "Topic4_Practical.ipynb, all 36 cells; Topic4_Practical.html; patients.csv and public_register.csv. The notebook explicitly declares all records synthetic. Run steps in order in a fresh notebook beside both CSVs.",
+      "files": [
+        "Topic4/ProgrammingNoSolution 2/Topic4_Practical.ipynb",
+        "Topic4/ProgrammingNoSolution 2/Topic4_Practical.html",
+        "Topic4/ProgrammingNoSolution 2/patients.csv",
+        "Topic4/ProgrammingNoSolution 2/public_register.csv"
+      ],
+      "steps": [
+        {
+          "title": "01 · Separate identification from sensitivity",
+          "prompt": "Load both synthetic files. Classify columns, then calculate uniqueness on sex; sex + date of birth; and sex + date of birth + postcode.",
+          "hint": "A quasi-identifier can identify a person in combination with other fields. Categories can overlap: ethnicity is sensitive and can also help linkage.",
+          "code": "import hashlib, hmac, secrets, time\nimport numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\npatients = pd.read_csv('patients.csv', dtype={'nhs_number': str})\nregister = pd.read_csv('public_register.csv')\ndirect = ['nhs_number', 'first_name', 'last_name']\ndef pct_unique(df, cols):\n    sizes = df.groupby(cols, dropna=False)[cols[0]].transform('size')\n    return 100 * sizes.eq(1).mean()\nprint('Shapes:', patients.shape, register.shape)\nfor cols in [['sex'], ['sex', 'date_of_birth'], ['sex', 'date_of_birth', 'postcode']]:\n    print(cols, round(pct_unique(patients, cols), 2))\nprint('Distinct NHS numbers:', patients['nhs_number'].nunique())",
+          "answer": "Patients: (2500, 11); register: (7375, 5). Uniqueness is 0%, 94.76% and 100%. Names and NHS number are direct identifiers; date of birth, sex, postcode and admission date can act as quasi-identifiers; diagnoses, ICD-10, ethnicity and care information are sensitive. The synthetic NHS number column contains 2,497 unique values across 2,500 rows, so it is not a perfect row key. These sample uniqueness percentages are not estimates of population uniqueness.",
+          "zh": "敏感性回答“泄露了会怎样”；可识别性回答“能否认出这个人”。二者不是同一件事，且同一列可以属于多个类别。"
+        },
+        {
+          "title": "02 · Show why removing names is insufficient",
+          "prompt": "Drop direct identifiers, link on the three shared QIs, retain register rows with exactly one match and count highly sensitive diagnoses. Display aggregate counts only.",
+          "hint": "Give each register row an internal row key. Group by that key after the merge; grouping by a possibly duplicated name is unreliable.",
+          "code": "naive_release = patients.drop(columns=direct)\nlink_cols = ['date_of_birth', 'sex', 'postcode']\nmatches = register.reset_index(names='register_row').merge(naive_release, on=link_cols)\nn_matches = matches.groupby('register_row')['register_row'].transform('size')\nreidentified = matches.loc[n_matches.eq(1)]\nvery_sensitive = ['HIV disease', 'Schizophrenia', 'Alcohol dependence', \"Huntington's disease\"]\nsensitive_hits = reidentified['diagnosis'].isin(very_sensitive)\nprint('Unique matches:', len(reidentified))\nprint('Highly sensitive matches:', int(sensitive_hits.sum()))\nprint(reidentified.loc[sensitive_hits, 'diagnosis'].value_counts())",
+          "answer": "There are 1,375 unique matches (55% of patients), including 95 in the specified highly sensitive group: alcohol dependence 46, schizophrenia 31, HIV disease 14 and Huntington’s disease 4. Removing names did not remove the linkage route. These counts demonstrate the exercise’s attack definition; unique matches in real data still require consideration of errors and false links.",
+          "zh": "删掉姓名不等于匿名。攻击者可以把出生日期、性别、邮编当作“拼图”重新连接身份与诊断。"
+        },
+        {
+          "title": "03 · Protect the identifier with HMAC",
+          "prompt": "Explain why a plain hash of a small input space is guessable. Time synthetic candidate hashing, create a secret-key pseudonym, and drop all direct identifiers.",
+          "hint": "Use a random in-memory key for this exercise. A hard-coded example key is public. HMAC protects the identifier; it does not change quasi-identifiers.",
+          "code": "t0 = time.perf_counter()\nfor i in range(1_000_000):\n    hashlib.sha256(f'999{i:07d}'.encode()).digest()\nelapsed = time.perf_counter() - t0\nprint('Seconds per million candidates:', round(elapsed, 3))\nprint('Simple 10-million extrapolation:', round(10 * elapsed, 3))\nsecret_key = secrets.token_bytes(32)  # retain securely if stable linkage is needed\npseudo = patients.drop(columns=direct).copy()\npseudo['pseudo_id'] = patients['nhs_number'].map(\n    lambda s: hmac.new(secret_key, s.encode(), hashlib.sha256).hexdigest())\nprint('Rows:', len(pseudo), 'distinct pseudonyms:', pseudo['pseudo_id'].nunique())\nprint('Direct identifiers remain:', any(c in pseudo.columns for c in direct))",
+          "answer": "Timing depends on hardware: report your measurement instead of copying a fixed number. HMAC creates 2,497 distinct pseudonyms for 2,500 rows because three input values are reused; this is not evidence of a hash collision. The QIs are unchanged, so the 1,375 unique linkage matches remain possible. Full SHA-256 output is used here instead of the notebook’s optional 16-character truncation.",
+          "zh": "带密钥的哈希像给编号换上只有保管员能生成的代号，但出生日期等线索仍在，所以假名化不等于匿名化。"
+        },
+        {
+          "title": "04 · Generalise and measure k",
+          "prompt": "Calculate exact age at admission, turn it into 10-year bands, use postcode district, broad ethnicity and admission year, and remove the corresponding raw fields.",
+          "hint": "k is the smallest equivalence-class size on the stated QIs. An average group size cannot establish k-anonymity.",
+          "code": "def k_anonymity(df, qi):\n    sizes = df.groupby(qi, dropna=False).size()\n    return int(sizes.min()) if len(sizes) else None\ndef age_at(dob, ref):\n    before_birthday = ((ref.dt.month < dob.dt.month) |\n        ((ref.dt.month == dob.dt.month) & (ref.dt.day < dob.dt.day)))\n    return ref.dt.year - dob.dt.year - before_birthday.astype(int)\nQI_RAW = ['date_of_birth', 'sex', 'postcode', 'ethnicity']\nprint('Raw k:', k_anonymity(pseudo, QI_RAW))\ngen = pseudo.copy()\ndob = pd.to_datetime(gen['date_of_birth'])\nadmission = pd.to_datetime(gen['admission_date'])\nband_start = age_at(dob, admission) // 10 * 10\ngen['age_band'] = band_start.astype(str) + '-' + (band_start + 9).astype(str)\ngen['district'] = gen['postcode'].str.split().str[0]\ngen['eth_group'] = gen['ethnicity'].str.split().str[0]\ngen['admission_year'] = admission.dt.year\ngen = gen.drop(columns=['date_of_birth', 'postcode', 'ethnicity', 'admission_date'])\nQI_GEN = ['age_band', 'sex', 'district', 'eth_group']\nprint('Generalised k:', k_anonymity(gen, QI_GEN))",
+          "answer": "Raw k = 1 and generalised k = 1. Coarsening fields alone leaves rare combinations. Exact completed age is used here; subtracting calendar years without checking birthdays can change band membership and downstream counts. k applies only to the QIs you actually checked, not automatically to every possible information source.",
+          "zh": "k 看的是最小组：只要还有一个人的组合独一无二，k 就仍然是 1。年龄要判断生日是否已过，不能只做年份相减。"
+        },
+        {
+          "title": "05 · Suppress small groups and inspect the cost",
+          "prompt": "Keep equivalence classes of at least five. Report both overall suppression and the percentage lost within each broad ethnic group.",
+          "hint": "Use the group’s original size as the denominator. An overall average can conceal complete loss of a small group.",
+          "code": "sizes = gen.groupby(QI_GEN, dropna=False)['age_band'].transform('size')\nsuppressed = sizes.lt(5)\nsafe = gen.loc[~suppressed].copy()\nreport = gen.assign(suppressed=suppressed).groupby('eth_group')['suppressed'].agg(['size', 'sum', 'mean'])\nreport['pct_suppressed'] = report.pop('mean').mul(100)\nprint('Suppressed:', int(suppressed.sum()), 'of', len(gen))\nprint('Retained:', len(safe), 'k:', k_anonymity(safe, QI_GEN))\nprint(report.round(2))",
+          "answer": "Suppress 982/2,500 rows (39.28%); retain 1,518 with k = 5. Within-group losses: Asian 226/270 = 83.70%; Black 278/550 = 50.55%; Chinese 76/76 = 100%; Mixed 154/154 = 100%; Other 131/131 = 100%; White 117/1,319 = 8.87%. A technically successful k rule can severely damage representativeness. The broad labels follow this exercise’s first-word rule, not a recommended universal ethnicity classification.",
+          "zh": "总体只丢失约四成，却有三个群体完全消失。保护隐私时也要问：谁的数据被删掉了？还能研究健康不平等吗？"
+        },
+        {
+          "title": "06 · Test attribute disclosure and attack again",
+          "prompt": "Count distinct diagnoses in each retained class. Then generalise the register using age on 1 July 2025 and repeat linkage using age band, sex and district.",
+          "hint": "The register has no ethnicity. Do not manufacture an l=1 example if the actual data contain none.",
+          "code": "diversity = safe.groupby(QI_GEN, dropna=False)['diagnosis'].nunique()\nprint('Classes:', len(diversity), 'minimum l:', int(diversity.min()))\nprint('Classes with l=1:', int(diversity.eq(1).sum()))\nreg = register.copy()\nref = pd.Series(pd.Timestamp('2025-07-01'), index=reg.index)\nstarts = age_at(pd.to_datetime(reg['date_of_birth']), ref) // 10 * 10\nreg['age_band'] = starts.astype(str) + '-' + (starts + 9).astype(str)\nreg['district'] = reg['postcode'].str.split().str[0]\nprotected_matches = reg.reset_index(names='register_row').merge(\n    safe, on=['age_band', 'sex', 'district'])\ncounts = protected_matches.groupby('register_row')['register_row'].transform('size')\nprint('Unique protected matches:', int(counts.eq(1).sum()))",
+          "answer": "There are 178 retained classes, minimum distinct-diagnosis l = 2, and zero classes with l = 1. Therefore the notebook request to show an l=1 class has no example under these rules. The protected attack finds zero unique matches. That does not prove universal anonymity: reference-date ages differ from admission ages, external knowledge may differ, and distinct l-diversity does not eliminate all attribute-disclosure risks.",
+          "zh": "没有符合条件的组就是正确结果，不要为了满足题目文字而编造示例。攻击失败一次，也不等于任何攻击都不可能成功。"
+        },
+        {
+          "title": "07 · Add noise to counts, not to your reasoning",
+          "prompt": "Demonstrate count differencing without displaying a person. Implement the Laplace mechanism for ε = 0.1, 1 and 10.",
+          "hint": "For a person-level count under add/remove adjacency and at most one contribution, sensitivity is 1. Lower ε means more noise.",
+          "code": "counts_true = patients['diagnosis'].value_counts()\nq1 = int(counts_true['HIV disease'])\nq2 = q1 - 1  # synthetic thought experiment: exclude one known target with HIV\nprint('Differencing:', q1, q2, 'difference:', q1 - q2)\nrng = np.random.default_rng(42)  # reproducible teaching only; not for a real release\ndef dp_count(true_count, epsilon, sensitivity=1.0):\n    if epsilon <= 0:\n        raise ValueError('epsilon must be positive')\n    return true_count + rng.laplace(0, sensitivity / epsilon)\nnoisy = pd.DataFrame({'true': counts_true})\nfor epsilon in (0.1, 1.0, 10.0):\n    noisy[f'epsilon={epsilon:g}'] = [dp_count(n, epsilon) for n in counts_true]\nprint(noisy.round(2))",
+          "answer": "True counts include Hypertension = 449, HIV disease = 37 and Huntington’s disease = 6. Differencing 37 − 36 reveals the target’s contribution. Noise scales are 10, 1 and 0.1 for ε = 0.1, 1 and 10. Noisy values need not be integers and may be negative. This seeded simulation teaches the mechanism; public deterministic seeds must not be used for real privacy-protecting releases. Repeated releases also consume privacy budget.",
+          "zh": "ε 越小保护越强，但噪声越大。这个固定随机种子是为了练习可复现，不能拿来公开发布真正需要保护的数据。"
+        },
+        {
+          "title": "08 · Explain the rare-disease trade-off",
+          "prompt": "Repeat counts 200 times across 20 log-spaced ε values and compare mean relative error for a common and a rare diagnosis. Finish the notebook’s policy questions in 2–3 sentences each.",
+          "hint": "Expected absolute Laplace noise is 1/ε, so expected relative error is 1/(ε × true_count). A finite simulation fluctuates around this expectation.",
+          "code": "rng = np.random.default_rng(42)  # teaching simulation, independent reset\neps_grid = np.logspace(-2, 1, 20)\nfig, ax = plt.subplots(figsize=(8, 5))\nfor diagnosis in ['Hypertension', \"Huntington's disease\"]:\n    n = int(counts_true[diagnosis])\n    error = np.array([np.mean(np.abs(rng.laplace(0, 1/e, 200))) / n\n                      for e in eps_grid])\n    ax.loglog(eps_grid, error, marker='.', label=f'{diagnosis} (n={n})')\n    passing = eps_grid[error <= 0.1]\n    print(diagnosis, 'first tested epsilon <=10% error:',\n          float(passing[0]) if len(passing) else None)\nax.axhline(0.1, color='grey', linestyle='--', label='10% relative error')\nax.set(xlabel='Epsilon', ylabel='Mean relative error')\nax.legend()\nplt.tight_layout()",
+          "answer": "Expected ≤10% relative error requires ε ≥ 10/449 ≈ 0.0223 for Hypertension and ε ≥ 10/6 ≈ 1.667 for Huntington’s. In this exact seeded 200-repeat simulation, the first passing grid points are about 0.0298 and 1.6238; sampling variation explains the latter being below the theoretical boundary. Strong wrap-up answers distinguish de-identification from anonymity; consider access controls/TREs and assessed synthetic data; justify ε through a stated utility need and privacy budget; and recognise suppression as systematic selection on observed QIs, not MCAR. Calling it MAR or MNAR requires stating the analysis variables and missingness model.",
+          "zh": "相同的绝对噪声，对 449 人影响很小，对 6 人影响很大。隐私与可用性的取舍会特别影响罕见病；模拟得到的临界点不是普遍保证。"
+        }
+      ],
+      "checks": [
+        "I can reproduce 1,375 unique synthetic linkage matches and explain the remaining QI risk after HMAC.",
+        "I can compute k from the smallest class and reproduce the 982 suppressed rows using completed age.",
+        "I can explain why zero l=1 classes is a valid answer and why subgroup suppression matters.",
+        "I can implement Laplace noise and explain ε, sensitivity, repeated-query budget and rare-group relative error.",
+        "Stretch: the original notebook proposes differentially private logistic regression; this site does not claim to have run that optional library task."
+      ]
+    }
+  ],
+  "audit": {
+    "fullyReadFiles": 12,
+    "notebooks": 5,
+    "htmlExports": 3,
+    "csvDatasets": 4,
+    "method": "Read every cell of 3 original notebooks and 2 local checkpoint notebooks, all substantive HTML text and saved text outputs, and every row/column of 4 CSVs. Reference calculations were independently recomputed; original notebooks were not executed wholesale and source files were not modified.",
+    "readFiles": [
+      {
+        "path": "Topic4/ProgrammingNoSolution 2/Topic4_Practical.html",
+        "sha256": "b37b9bc5efe133589e3ef1400a7560e31bd98e9c1715d87b5352142cd7662b64"
+      },
+      {
+        "path": "Topic4/ProgrammingNoSolution 2/public_register.csv",
+        "sha256": "7b65bb54e47394e5d4d464c4f297fd5595417b64872a38b982128b79b0791039"
+      },
+      {
+        "path": "Topic4/ProgrammingNoSolution 2/patients.csv",
+        "sha256": "ae5f51102635c094217730af0ad6f98f2e06bb5b9271a968afa820cbf740d5c5"
+      },
+      {
+        "path": "Topic4/ProgrammingNoSolution 2/Topic4_Practical.ipynb",
+        "sha256": "a4b100a59288b8dbd48e74d56c411869221a74851f555521d38d1ef9635a909f"
+      },
+      {
+        "path": "Topic1-3/ProgrammingNoSolution/Pract1.ipynb",
+        "sha256": "47a2f2ea065d7a95a99cb9129992e786f512161342a961d40c334e8866bff3a2"
+      },
+      {
+        "path": "Topic1-3/ProgrammingNoSolution/Pract2.ipynb",
+        "sha256": "34fdc1a1150c8872e84797f9a9ce874b28799238e1621d985844e1fe1546ef73"
+      },
+      {
+        "path": "Topic1-3/ProgrammingNoSolution/Pract1.html",
+        "sha256": "cb8865f555a09cc06bd17412fb2a2b6ab1d437a9f616ebc4fd2a59ca9eeac9f4"
+      },
+      {
+        "path": "Topic1-3/ProgrammingNoSolution/septic_shock.csv",
+        "sha256": "1882d9685311e3e8c468810e61bd86471cf4dcb40bfc24b2ff56fe14ea7bc605"
+      },
+      {
+        "path": "Topic1-3/ProgrammingNoSolution/Pract2.html",
+        "sha256": "690c9627e9a2ee9debc490f217fc62f1f9a2e0fbc415cbee62863dab5f8902aa"
+      },
+      {
+        "path": "Topic1-3/ProgrammingNoSolution/PatientTrajectory.csv",
+        "sha256": "5e2a657f3e6634a3a23f3f7a57314cd99dc00e4ba5f7cb07f75cf4bb0ffee784"
+      },
+      {
+        "path": "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/Pract2Sol-checkpoint.ipynb",
+        "sha256": "be071aa87f8a99b79de364cd930c2aaed7eea31991166b04c38d0b59eb332286"
+      },
+      {
+        "path": "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/Day2Pract2Sol-checkpoint.ipynb",
+        "sha256": "cd5dccb6d6238d9c8cde85c491661e6bed08322d907d6e7d098e1af07a388c89"
+      },
+      {
+        "path": "study-atlas/dist/resources/Topic4/ProgrammingNoSolution 2/Topic4_Practical.html",
+        "sha256": "b37b9bc5efe133589e3ef1400a7560e31bd98e9c1715d87b5352142cd7662b64"
+      },
+      {
+        "path": "study-atlas/dist/resources/Topic4/ProgrammingNoSolution 2/public_register.csv",
+        "sha256": "7b65bb54e47394e5d4d464c4f297fd5595417b64872a38b982128b79b0791039"
+      },
+      {
+        "path": "study-atlas/dist/resources/Topic4/ProgrammingNoSolution 2/patients.csv",
+        "sha256": "ae5f51102635c094217730af0ad6f98f2e06bb5b9271a968afa820cbf740d5c5"
+      },
+      {
+        "path": "study-atlas/dist/resources/Topic4/ProgrammingNoSolution 2/Topic4_Practical.ipynb",
+        "sha256": "a4b100a59288b8dbd48e74d56c411869221a74851f555521d38d1ef9635a909f"
+      },
+      {
+        "path": "study-atlas/dist/resources/Topic1-3/ProgrammingNoSolution/Pract1.ipynb",
+        "sha256": "47a2f2ea065d7a95a99cb9129992e786f512161342a961d40c334e8866bff3a2"
+      },
+      {
+        "path": "study-atlas/dist/resources/Topic1-3/ProgrammingNoSolution/Pract2.ipynb",
+        "sha256": "34fdc1a1150c8872e84797f9a9ce874b28799238e1621d985844e1fe1546ef73"
+      },
+      {
+        "path": "study-atlas/dist/resources/Topic1-3/ProgrammingNoSolution/Pract1.html",
+        "sha256": "cb8865f555a09cc06bd17412fb2a2b6ab1d437a9f616ebc4fd2a59ca9eeac9f4"
+      },
+      {
+        "path": "study-atlas/dist/resources/Topic1-3/ProgrammingNoSolution/septic_shock.csv",
+        "sha256": "1882d9685311e3e8c468810e61bd86471cf4dcb40bfc24b2ff56fe14ea7bc605"
+      },
+      {
+        "path": "study-atlas/dist/resources/Topic1-3/ProgrammingNoSolution/Pract2.html",
+        "sha256": "690c9627e9a2ee9debc490f217fc62f1f9a2e0fbc415cbee62863dab5f8902aa"
+      },
+      {
+        "path": "study-atlas/dist/resources/Topic1-3/ProgrammingNoSolution/PatientTrajectory.csv",
+        "sha256": "5e2a657f3e6634a3a23f3f7a57314cd99dc00e4ba5f7cb07f75cf4bb0ffee784"
+      },
+      {
+        "path": "study-atlas/dist/resources/Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/Pract2Sol-checkpoint.ipynb",
+        "sha256": "be071aa87f8a99b79de364cd930c2aaed7eea31991166b04c38d0b59eb332286"
+      },
+      {
+        "path": "study-atlas/dist/resources/Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/Day2Pract2Sol-checkpoint.ipynb",
+        "sha256": "cd5dccb6d6238d9c8cde85c491661e6bed08322d907d6e7d098e1af07a388c89"
+      }
+    ],
+    "duplicates": [
+      "Three HTML files are rendered exports of their corresponding original notebooks, not three extra assignments.",
+      "Two Practical 2 solution checkpoints are near duplicates: source changes are an instructor-local year/path and plot versus step for the low threshold; saved figure sizes differ."
+    ],
+    "unavailable": [
+      "Topic1-3/ProgrammingNoSolution/septic_shock_cleaned.csv",
+      "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/Day2Pract2-checkpoint.ipynb",
+      "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/Day2Pract1Sol-checkpoint.ipynb",
+      "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/Day2PractSol-checkpoint.ipynb",
+      "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/Day2Pract1-checkpoint.ipynb"
+    ],
+    "icloudNote": "Six .icloud placeholder files exist in the practical folders. septic_shock.csv has an accessible local counterpart; the cleaned CSV and four named checkpoints do not. Placeholder metadata is not the missing document content.",
+    "corrections": [
+      "Replace hard-coded instructor [instructor home directory] paths with same-folder filenames.",
+      "Practical 1 intro names simulated_data.csv and 11 features, but the supplied septic_shock.csv has 16 columns: 1 ID, 13 predictors and 2 outcomes.",
+      "Practical 1 leaves meaningful bounds open; the 990-row reference is conditional on explicitly stated illustrative bounds, preserving NaNs.",
+      "Practical 2 alarm-setting lines are not evidence of actual alarm events. Use where=post and backward temporal alignment for persistent-setting interpretation.",
+      "Do not pair equal-length physiological series by row order: there are only 165 simultaneous paired timestamps.",
+      "Topic 4 synthetic NHS numbers repeat: 2497 distinct inputs across 2500 rows; repeated pseudonyms are not hash collisions.",
+      "No retained class has l=1 with exact completed-age bands, so the request to show one cannot be fulfilled honestly.",
+      "Full HMAC digest and a generated secret key replace a public example key/optional 16-character truncation.",
+      "Fixed random seeds are for reproducible DP simulations, not valid real-world protection against an observer who knows the seed.",
+      "Practical 1 says one record per patient, but 1000 rows contain only 760 distinct Subject_ID values. Verify row independence and identifier provenance before patient-level analysis or splitting."
+    ],
+    "scopeNotes": [
+      "No resampling exercise, median-versus-mean error or outlier-axis code occurs in these 3 original practical notebooks. Added alignment, missingness and validation checkpoints are identified as explanatory extensions.",
+      "Optional diffprivlib logistic-regression stretch task is described but not executed."
+    ],
+    "dataStatus": {
+      "privacy": "The Topic 4 notebook explicitly states all patients/register data are synthetic; all 2500 NHS strings have the 999 prefix. No individual rows or linked names are displayed in these reference answers.",
+      "cohort": "Practical 1 calls its introductory filename simulated_data.csv but actually loads septic_shock.csv. Simulation is suggested by the introduction; independent provenance is not supplied.",
+      "trajectory": "The supplied Practical 2 describes an EHR patient trajectory and does not explicitly establish synthetic status. Keep it in the user’s private local study workspace; these materials do not establish permission for public raw-data distribution."
+    },
+    "references": {
+      "cohortRows": 1000,
+      "cohortColumns": 16,
+      "workedExampleCleanRows": 990,
+      "trajectoryRows": 8353,
+      "trajectoryLabels": 310,
+      "trajectoryPatients": 1,
+      "privacyPatientRows": 2500,
+      "privacyRegisterRows": 7375,
+      "linkedRows": 1375,
+      "sensitiveLinkedRows": 95,
+      "suppressedRows": 982,
+      "retainedRows": 1518,
+      "retainedK": 5,
+      "retainedClasses": 178,
+      "minimumDistinctL": 2,
+      "lEqualsOneClasses": 0,
+      "uniqueProtectedMatches": 0,
+      "cohortUniqueSubjectIDs": 760
+    },
+    "validation": "All 20 generated step code blocks compiled and their numerical/file-export paths ran sequentially in fresh temporary folders with copies of the datasets. Plotting was stubbed because matplotlib is not installed in the bundled Python, so figures were not rendered in this audit. Original source SHA-256 hashes remained unchanged."
+  }
+}

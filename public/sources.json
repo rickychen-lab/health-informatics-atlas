@@ -1,0 +1,357 @@
+[
+  {
+    "path": "Topic1-3/.DS_Store",
+    "bytes": 8196,
+    "status": "system metadata"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/.DS_Store",
+    "bytes": 6148,
+    "status": "system metadata"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/.Day2Pract1-checkpoint.ipynb.icloud",
+    "bytes": 177,
+    "status": "icloud placeholder"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/.Day2Pract1Sol-checkpoint.ipynb.icloud",
+    "bytes": 182,
+    "status": "icloud placeholder"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/.Day2Pract2-checkpoint.ipynb.icloud",
+    "bytes": 179,
+    "status": "icloud placeholder"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/.Day2PractSol-checkpoint.ipynb.icloud",
+    "bytes": 181,
+    "status": "icloud placeholder"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/Day2Pract2Sol-checkpoint.ipynb",
+    "bytes": 160809,
+    "cells": 22,
+    "characters": 5966,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/.ipynb_checkpoints/Pract2Sol-checkpoint.ipynb",
+    "bytes": 255020,
+    "cells": 22,
+    "characters": 5966,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/.septic_shock.csv.icloud",
+    "bytes": 168,
+    "status": "icloud placeholder"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/.septic_shock_cleaned.csv.icloud",
+    "bytes": 176,
+    "status": "icloud placeholder"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/PatientTrajectory.csv",
+    "bytes": 611775,
+    "rows": 8353,
+    "columns": [
+      "ID",
+      "charttime",
+      "intime",
+      "hours",
+      "label",
+      "value",
+      "valuenum",
+      "valueuom"
+    ],
+    "characters": 897,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/Pract1.html",
+    "bytes": 627575,
+    "characters": 8445,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/Pract1.ipynb",
+    "bytes": 48345,
+    "cells": 23,
+    "characters": 8975,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/Pract2.html",
+    "bytes": 644934,
+    "characters": 5852,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/Pract2.ipynb",
+    "bytes": 73595,
+    "cells": 20,
+    "characters": 4528,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/ProgrammingNoSolution/septic_shock.csv",
+    "bytes": 73917,
+    "rows": 1000,
+    "columns": [
+      "Subject_ID",
+      "heartrate_min",
+      "temp_min",
+      "temp_max",
+      "respiratory_rate_min",
+      "respiratory_rate_max",
+      "creatinine_max",
+      "troponin_max",
+      "bilirubin_max",
+      "urea_max",
+      "sofa",
+      "gender",
+      "age",
+      "comorbidity",
+      "Mortality",
+      "LOS"
+    ],
+    "characters": 1469,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/Session 1 - Lecture 1.pdf",
+    "bytes": 1459995,
+    "pages": 35,
+    "characters": 7527,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/Session 1 - Tutorial.pdf",
+    "bytes": 111260,
+    "pages": 3,
+    "characters": 3293,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/Session 1- Lecture 2.pdf",
+    "bytes": 687205,
+    "pages": 14,
+    "characters": 3848,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/Session 2 - Lecture 1.pdf",
+    "bytes": 788860,
+    "pages": 16,
+    "characters": 2753,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/Session 2 - Lecture 2.pdf",
+    "bytes": 1692425,
+    "pages": 21,
+    "characters": 3950,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/Session 3 - Lecture 1.pdf",
+    "bytes": 1785450,
+    "pages": 19,
+    "characters": 5800,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/原文_AI使用与EHR认知教学指导.pdf",
+    "bytes": 11547,
+    "pages": 1,
+    "characters": 392,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/原文_Ethics课程收尾与周五测验通知.pdf",
+    "bytes": 11869,
+    "pages": 1,
+    "characters": 401,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/原文_NHS编码体系对比与实践教程分组.pdf",
+    "bytes": 35694,
+    "pages": 2,
+    "characters": 2789,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/原文_健康信息学伦理与科学方法导论.pdf",
+    "bytes": 122099,
+    "pages": 16,
+    "characters": 41435,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/原文_健康信息学导论课核心理论与EHR数据特征.pdf",
+    "bytes": 160310,
+    "pages": 19,
+    "characters": 54771,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/原文_电子健康记录NLP模块课程导论.pdf",
+    "bytes": 20044,
+    "pages": 2,
+    "characters": 3551,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/纪要_AI使用与EHR认知教学指导.md",
+    "bytes": 1054,
+    "characters": 428,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/纪要_Ethics课程收尾与周五测验通知.md",
+    "bytes": 609,
+    "characters": 265,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/纪要_NHS编码体系对比与实践教程分组.md",
+    "bytes": 1726,
+    "characters": 750,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/纪要_健康信息学伦理与科学方法导论.md",
+    "bytes": 5844,
+    "characters": 2418,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/纪要_健康信息学导论课核心理论与EHR数据特征.md",
+    "bytes": 7944,
+    "characters": 3254,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic1-3/纪要_电子健康记录NLP模块课程导论.md",
+    "bytes": 2387,
+    "characters": 1059,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic4/.DS_Store",
+    "bytes": 10244,
+    "status": "system metadata"
+  },
+  {
+    "path": "Topic4/ProgrammingNoSolution 2/Topic4_Practical.html",
+    "bytes": 326932,
+    "characters": 12389,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic4/ProgrammingNoSolution 2/Topic4_Practical.ipynb",
+    "bytes": 20304,
+    "cells": 36,
+    "characters": 13447,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic4/ProgrammingNoSolution 2/patients.csv",
+    "bytes": 226881,
+    "rows": 2500,
+    "columns": [
+      "nhs_number",
+      "first_name",
+      "last_name",
+      "date_of_birth",
+      "sex",
+      "postcode",
+      "ethnicity",
+      "admission_date",
+      "icd10",
+      "diagnosis",
+      "length_of_stay_days"
+    ],
+    "characters": 1241,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic4/ProgrammingNoSolution 2/public_register.csv",
+    "bytes": 254077,
+    "rows": 7375,
+    "columns": [
+      "first_name",
+      "last_name",
+      "date_of_birth",
+      "sex",
+      "postcode"
+    ],
+    "characters": 607,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic4/Topic4_Lecture1_Privacy_Confidentiality_IG.pptx",
+    "bytes": 4001398,
+    "slides": 36,
+    "characters": 19577,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic4/Topic4_Lecture2_Security_PETs_TrustworthyAI.pptx",
+    "bytes": 1754891,
+    "slides": 30,
+    "characters": 18343,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic4/原文_KCL健康信息学隐私安全与AI风险讲座.pdf",
+    "bytes": 144511,
+    "pages": 21,
+    "characters": 65651,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  },
+  {
+    "path": "Topic4/纪要_KCL健康信息学隐私安全与AI风险讲座.md",
+    "bytes": 15350,
+    "characters": 6836,
+    "url": "local-only",
+    "availability": "Local course folder only"
+  }
+]
